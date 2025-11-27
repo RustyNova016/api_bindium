@@ -1,0 +1,20 @@
+[repository.api_maker]
+path="./"
+default_branch="master"
+
+    [repository.api_maker.release]
+    git_cliff = true
+
+    [repository.api_maker.rust]
+    fmt = true
+    clippy_hack = true
+    sqlx = false
+
+    [repository.api_maker.rust.ci]
+    fmt = true
+    clippy = true
+    test = true
+    nextest = false
+    msrv = true
+    machete = true
+    #semver = true <- Need nightly as well but break CI...
