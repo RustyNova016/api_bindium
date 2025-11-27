@@ -1,4 +1,4 @@
-# api_maker
+# api_bindium
 
 A crate to provide foundations for creating API binding crates.
 

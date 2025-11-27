@@ -1,16 +1,16 @@
-[repository.api_maker]
+[repository.api_bindium]
 path="./"
 default_branch="master"
 
-    [repository.api_maker.release]
+    [repository.api_bindium.release]
     git_cliff = true
 
-    [repository.api_maker.rust]
+    [repository.api_bindium.rust]
     fmt = true
     clippy_hack = true
     sqlx = false
 
-    [repository.api_maker.rust.ci]
+    [repository.api_bindium.rust.ci]
     fmt = true
     clippy = true
     test = true
