@@ -1,7 +1,6 @@
 #[cfg(any(feature = "sync", feature = "async"))]
 use std::time::Instant;
 
-
 #[cfg(feature = "sync")]
 pub(crate) fn sleep_until(until: Instant) {
     let dur = Instant::now() - until;
@@ -11,7 +10,6 @@ pub(crate) fn sleep_until(until: Instant) {
         sleep(dur);
     }
 }
-
 
 #[cfg(feature = "async")]
 pub(crate) async fn sleep_until_async(until: Instant) {

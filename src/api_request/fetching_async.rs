@@ -104,6 +104,6 @@ impl<T> ApiRequest<T> {
         T: DeserializeOwned,
     {
         let mut response = self.send_with_retries_async(client).await?;
-        self.parse_response(&mut response).await
+        self.parse_response(&mut response)
     }
 }
