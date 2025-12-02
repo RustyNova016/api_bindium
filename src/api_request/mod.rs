@@ -50,6 +50,14 @@ impl<T> ApiRequest<T> {
         &self.uri
     }
 
+    pub fn verb(&self) -> HTTPVerb {
+        self.verb
+    }
+
+    pub fn body(&self) -> &Option<serde_json::Value> {
+        &self.body
+    }
+
     /// Reset the api request back to 0 tries
     pub fn reset(&mut self) {
         self.tries = 0
@@ -72,9 +80,7 @@ impl<T> ApiRequest<T> {
 fn get_temporary_error_timeout(response: &Response<Body>) -> Option<Instant> {
     let headers = response.headers();
 
-    let Some(retry_after) = headers.get("retry-after") else {
-        return None;
-    };
+    let retry_after = headers.get("retry-after")?;
 
     let Ok(retry_after) = retry_after.to_str() else {
         return None;

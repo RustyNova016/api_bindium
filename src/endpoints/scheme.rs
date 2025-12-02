@@ -5,10 +5,7 @@ pub struct EndpointUriBuilderScheme;
 
 impl EndpointUriBuilder<EndpointUriBuilderScheme> {
     pub fn new() -> EndpointUriBuilder<EndpointUriBuilderScheme> {
-        EndpointUriBuilder {
-            _state: EndpointUriBuilderScheme,
-            uri: String::new(),
-        }
+        Self::default()
     }
 
     /// Set the scheme
@@ -27,5 +24,14 @@ impl EndpointUriBuilder<EndpointUriBuilderScheme> {
     /// Set the scheme to `https`
     pub fn https(self) -> EndpointUriBuilder<EndpointUriBuilderAuthority> {
         self.set_scheme("https")
+    }
+}
+
+impl Default for EndpointUriBuilder<EndpointUriBuilderScheme> {
+    fn default() -> Self {
+        EndpointUriBuilder {
+            _state: EndpointUriBuilderScheme,
+            uri: String::new(),
+        }
     }
 }
