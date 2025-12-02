@@ -1,3 +1,6 @@
+// Until `snafu` got something to easily box error sources, we ignore it
+#![allow(clippy::result_large_err)]
+
 pub mod api_request;
 pub mod client;
 pub mod endpoints;

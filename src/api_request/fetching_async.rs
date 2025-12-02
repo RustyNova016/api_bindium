@@ -27,7 +27,7 @@ where
         let uri = self.uri.to_owned();
         let body = self.body.to_owned();
         let agent = client.agent.to_owned();
-        let verb = self.verb.clone();
+        let verb = self.verb;
 
         #[cfg(feature = "tracing")]
         tracing::debug!(
