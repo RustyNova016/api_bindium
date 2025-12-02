@@ -17,12 +17,10 @@ use governor::state::InMemoryState;
 use governor::state::NotKeyed;
 use ureq::Agent;
 
-
-
 /// The client handling the data for fetching
 #[derive(Debug, bon::Builder, Clone)]
 pub struct ApiClient {
-    /// The [ureq::Agent] for the 
+    /// The [ureq::Agent] for the
     #[builder(default = ureq::agent())]
     pub agent: Agent,
 

@@ -12,7 +12,10 @@ use crate::api_request::error::UreqSnafu;
 use crate::api_request::get_temporary_error_timeout;
 use crate::utils::sleep_until_async;
 
-impl<T> ApiRequest<T> {
+impl<T> ApiRequest<T>
+where
+    T: Sync,
+{
     /// Send the request without any fluff.
     ///
     /// This is an advanced function. You are probably looking for [Self::send_async]
@@ -22,19 +25,23 @@ impl<T> ApiRequest<T> {
         client: &ApiClient,
     ) -> Result<Response<Body>, ApiRequestError> {
         let uri = self.uri.to_owned();
+        let body = self.body.to_owned();
+        let agent = client.agent.to_owned();
+        let verb = self.verb.clone();
 
         #[cfg(feature = "tracing")]
-        tracing::debug!("Sending GET request at {uri} (Try {})", self.tries);
+        tracing::debug!(
+            "Sending {} request at {uri} (Try {})",
+            self.verb,
+            self.tries
+        );
 
-        let agent = client.agent.to_owned();
         blocking::unblock(move || {
-            agent
-                .get(&uri)
-                .config()
-                .http_status_as_error(false)
-                .build()
-                .call()
-                .context(UreqSnafu { uri })
+            match verb {
+                crate::HTTPVerb::Get => Self::send_without_body(agent.get(&uri)),
+                crate::HTTPVerb::Post => Self::send_with_body(agent.post(&uri), body),
+            }
+            .context(UreqSnafu { uri })
         })
         .await
     }
@@ -104,6 +111,6 @@ impl<T> ApiRequest<T> {
         T: DeserializeOwned,
     {
         let mut response = self.send_with_retries_async(client).await?;
-        self.parse_response(&mut response).await
+        self.parse_response(&mut response)
     }
 }

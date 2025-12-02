@@ -11,7 +11,7 @@ pub mod path;
 pub mod query;
 pub mod scheme;
 
-/// Builder to create an URI for an endpoint. 
+/// Builder to create an URI for an endpoint.
 pub struct EndpointUriBuilder<State> {
     uri: String,
 
@@ -24,9 +24,18 @@ impl<S> EndpointUriBuilder<S> {
     }
 
     pub fn into_api_request<T>(self, verb: HTTPVerb) -> Result<ApiRequest<T>, InvalidUri> {
+        Ok(ApiRequest::builder().uri(self.to_uri()?).verb(verb).build())
+    }
+
+    pub fn into_api_request_with_body<T>(
+        self,
+        verb: HTTPVerb,
+        body: serde_json::Value,
+    ) -> Result<ApiRequest<T>, InvalidUri> {
         Ok(ApiRequest::builder()
             .uri(self.to_uri()?)
             .verb(verb)
+            .body(body)
             .build())
     }
 }

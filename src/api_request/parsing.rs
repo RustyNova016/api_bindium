@@ -12,7 +12,7 @@ use crate::api_request::error::UreqSnafu;
 impl<T> ApiRequest<T> {
     /// Parse the request json5
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn parse_response(&self, response: &mut Response<Body>) -> Result<T, ApiRequestError>
+    pub fn parse_response(&self, response: &mut Response<Body>) -> Result<T, ApiRequestError>
     where
         T: DeserializeOwned,
     {
