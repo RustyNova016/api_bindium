@@ -19,16 +19,19 @@ impl<T> ApiRequest<T> {
         let uri = self.uri.to_owned();
 
         #[cfg(feature = "tracing")]
-        tracing::debug!("Sending GET request at {uri} (Try {})", self.tries);
+        tracing::debug!(
+            "Sending {} request at {uri} (Try {})",
+            self.verb,
+            self.tries
+        );
 
-        client
-            .agent
-            .get(&uri)
-            .config()
-            .http_status_as_error(false)
-            .build()
-            .call()
-            .context(UreqSnafu { uri })
+        match self.verb {
+            crate::HTTPVerb::Get => Self::send_without_body(client.agent.get(&uri)),
+            crate::HTTPVerb::Post => {
+                Self::send_with_body(client.agent.post(&uri), self.body.clone())
+            }
+        }
+        .context(UreqSnafu { uri })
     }
 
     /// Send the request, deal with errors and ratelimiting

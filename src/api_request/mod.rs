@@ -15,6 +15,7 @@ pub mod error;
 pub mod fetching_async;
 #[cfg(feature = "sync")]
 pub mod fetching_sync;
+pub mod http_request;
 pub mod parsing;
 
 /// A raw API request, used to send custom requests to the API
@@ -25,8 +26,10 @@ pub struct ApiRequest<T> {
     uri: Uri,
 
     /// The http verb of the api request
-    #[expect(dead_code)]
     verb: HTTPVerb,
+
+    /// The body of the request
+    body: Option<serde_json::Value>,
 
     /// The schema of the returned data
     #[builder(skip)]

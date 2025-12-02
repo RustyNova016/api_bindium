@@ -26,6 +26,18 @@ impl<S> EndpointUriBuilder<S> {
     pub fn into_api_request<T>(self, verb: HTTPVerb) -> Result<ApiRequest<T>, InvalidUri> {
         Ok(ApiRequest::builder().uri(self.to_uri()?).verb(verb).build())
     }
+
+    pub fn into_api_request_with_body<T>(
+        self,
+        verb: HTTPVerb,
+        body: serde_json::Value,
+    ) -> Result<ApiRequest<T>, InvalidUri> {
+        Ok(ApiRequest::builder()
+            .uri(self.to_uri()?)
+            .verb(verb)
+            .body(body)
+            .build())
+    }
 }
 
 impl<S> Display for EndpointUriBuilder<S> {
