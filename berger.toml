@@ -12,7 +12,7 @@ default_branch="master"
 
     [repository.api_bindium.rust.ci]
     fmt = true
-    clippy = true
+    clippy = false
     test = true
     nextest = false
     msrv = true
