@@ -1,5 +1,8 @@
 use core::fmt::Display;
+use core::str::FromStr;
 
+use snafu::ResultExt;
+use snafu::Snafu;
 use ureq::http::Uri;
 use ureq::http::uri::InvalidUri;
 
@@ -19,11 +22,11 @@ pub struct EndpointUriBuilder<State> {
 }
 
 impl<S> EndpointUriBuilder<S> {
-    pub fn to_uri(self) -> Result<Uri, InvalidUri> {
+    pub fn to_uri(self) -> Result<Uri, UriBuilderError> {
         self.try_into()
     }
 
-    pub fn into_api_request<T>(self, verb: HTTPVerb) -> Result<ApiRequest<T>, InvalidUri> {
+    pub fn into_api_request<T>(self, verb: HTTPVerb) -> Result<ApiRequest<T>, UriBuilderError> {
         Ok(ApiRequest::builder().uri(self.to_uri()?).verb(verb).build())
     }
 
@@ -31,7 +34,7 @@ impl<S> EndpointUriBuilder<S> {
         self,
         verb: HTTPVerb,
         body: serde_json::Value,
-    ) -> Result<ApiRequest<T>, InvalidUri> {
+    ) -> Result<ApiRequest<T>, UriBuilderError> {
         Ok(ApiRequest::builder()
             .uri(self.to_uri()?)
             .verb(verb)
@@ -47,9 +50,23 @@ impl<S> Display for EndpointUriBuilder<S> {
 }
 
 impl<S> TryFrom<EndpointUriBuilder<S>> for Uri {
-    type Error = InvalidUri;
+    type Error = UriBuilderError;
 
     fn try_from(value: EndpointUriBuilder<S>) -> Result<Self, Self::Error> {
-        Uri::try_from(value.uri)
+        Uri::from_str(&value.uri).context(UriBuilderSnafu { uri: value.uri })
     }
+}
+
+#[derive(Debug, Snafu)]
+#[snafu(display("The built URI has an invalid schema: {uri}"))]
+pub struct UriBuilderError {
+    source: InvalidUri,
+
+    #[snafu(implicit)]
+    location: snafu::Location,
+
+    uri: String,
+
+    #[cfg(feature = "backtrace")]
+    backtrace: snafu::Backtrace,
 }
