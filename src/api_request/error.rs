@@ -10,6 +10,9 @@ pub enum ApiRequestError {
     UreqError {
         source: ureq::Error,
 
+        #[snafu(implicit)]
+        location: snafu::Location,
+
         uri: Uri,
 
         #[cfg(feature = "backtrace")]
@@ -20,6 +23,9 @@ pub enum ApiRequestError {
         "The max retry count for the request as been exeeded. You may want to check if the correct url is set, the server is online, or you aren't hitting the ratelimit."
     ))]
     MaxRetriesExceeded {
+        #[snafu(implicit)]
+        location: snafu::Location,
+
         #[cfg(feature = "backtrace")]
         backtrace: snafu::Backtrace,
     },
@@ -28,6 +34,9 @@ pub enum ApiRequestError {
     InvalidResponse {
         source: serde_json::Error,
         data: String,
+
+        #[snafu(implicit)]
+        location: snafu::Location,
 
         #[cfg(feature = "backtrace")]
         backtrace: snafu::Backtrace,
