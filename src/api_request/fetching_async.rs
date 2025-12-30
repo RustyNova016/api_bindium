@@ -1,4 +1,3 @@
-use serde::de::DeserializeOwned;
 use snafu::ResultExt;
 use ureq::Body;
 use ureq::http::Response;
@@ -10,6 +9,7 @@ use crate::api_request::error::MaxRetriesExceededSnafu;
 use crate::api_request::error::UreqSnafu;
 
 use crate::api_request::get_temporary_error_timeout;
+use crate::api_request::parsers::Parser;
 use crate::utils::sleep_until_async;
 
 impl<T> ApiRequest<T>
@@ -106,9 +106,9 @@ where
 
     /// Send the api request with retries and return the parsed data.
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn send_async(&mut self, client: &ApiClient) -> Result<T, ApiRequestError>
+    pub async fn send_async<O>(&mut self, client: &ApiClient) -> Result<O, ApiRequestError>
     where
-        T: DeserializeOwned,
+        T: Parser<O>,
     {
         let mut response = self.send_with_retries_async(client).await?;
         self.parse_response(&mut response)

@@ -16,11 +16,12 @@ pub mod fetching_async;
 #[cfg(feature = "sync")]
 pub mod fetching_sync;
 pub mod http_request;
+pub mod parsers;
 pub mod parsing;
 
 /// A raw API request, used to send custom requests to the API
 #[derive(Debug, Clone, bon::Builder)]
-pub struct ApiRequest<T> {
+pub struct ApiRequest<P> {
     /// The uri to fetch
     #[builder(into)]
     uri: Uri,
@@ -31,9 +32,9 @@ pub struct ApiRequest<T> {
     /// The body of the request
     body: Option<serde_json::Value>,
 
-    /// The schema of the returned data
+    /// The parser to use on the response
     #[builder(skip)]
-    pub returned_schema: PhantomData<T>,
+    pub parser: PhantomData<P>,
 
     // === Fetching state ===
     /// The current number of times the request has been tried

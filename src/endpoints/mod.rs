@@ -8,6 +8,7 @@ use ureq::http::uri::InvalidUri;
 
 use crate::ApiRequest;
 use crate::HTTPVerb;
+use crate::api_request::parsers::Parser;
 
 pub mod authority;
 pub mod path;
@@ -26,15 +27,21 @@ impl<S> EndpointUriBuilder<S> {
         self.try_into()
     }
 
-    pub fn into_api_request<T>(self, verb: HTTPVerb) -> Result<ApiRequest<T>, UriBuilderError> {
+    pub fn into_api_request<P, T>(self, verb: HTTPVerb) -> Result<ApiRequest<P>, UriBuilderError>
+    where
+        P: Parser<T>,
+    {
         Ok(ApiRequest::builder().uri(self.to_uri()?).verb(verb).build())
     }
 
-    pub fn into_api_request_with_body<T>(
+    pub fn into_api_request_with_body<P, T>(
         self,
         verb: HTTPVerb,
         body: serde_json::Value,
-    ) -> Result<ApiRequest<T>, UriBuilderError> {
+    ) -> Result<ApiRequest<P>, UriBuilderError>
+    where
+        P: Parser<T>,
+    {
         Ok(ApiRequest::builder()
             .uri(self.to_uri()?)
             .verb(verb)
