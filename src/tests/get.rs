@@ -1,9 +1,10 @@
 use std::collections::HashMap;
 
 use crate::ApiRequest;
+use crate::api_request::parsers::json::JsonParser;
 use crate::endpoints::EndpointUriBuilder;
 
-fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<HttpBinGetResponse> {
+fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinGetResponse>> {
     EndpointUriBuilder::new()
         .https()
         .set_authority("httpbin.org")

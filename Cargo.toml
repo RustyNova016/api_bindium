@@ -6,21 +6,23 @@ rust-version = "1.85.0"
 
 [dependencies]
 # Fetching
-ureq = {version = "3.1.4", default-features = false, features = ["json", "gzip"]}
-governor = {version = "0.10.2", optional = true}
+ureq = { version = "3.1.4", default-features = false, features = ["json", "gzip"] }
+governor = { version = "0.10.2", optional = true }
+
+# Parsing
+serde_core = { version = "1.0.220" }
+serde_json = { version = "1.0.145" }
 
 # Async
-blocking = {version = "1.6.2", optional = true}
-async-io = {version = "2.6.0", optional = true}
+blocking = { version = "1.6.2", optional = true }
+async-io = { version = "2.6.0", optional = true }
 
 # Debuging
-tracing = {version = "0.1.41", optional = true}
+tracing = { version = "0.1.41", optional = true }
 hotpath = { version = "0.9.0", optional = true }
 
 # Others
 bon = "3.8.1"
-serde = "1.0.228"
-serde_json = "1.0.145"
 snafu = "0.8.9"
 url-escape = "0.1.1"
 

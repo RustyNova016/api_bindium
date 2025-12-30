@@ -31,7 +31,7 @@ pub enum ApiRequestError {
     },
 
     #[snafu(display("The api's response couldn't be deserialized:\n{data}"))]
-    InvalidResponse {
+    JsonParsingError {
         source: serde_json::Error,
         data: String,
 
