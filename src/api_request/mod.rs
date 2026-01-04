@@ -1,23 +1,25 @@
 use core::marker::PhantomData;
 use core::time::Duration;
+use std::collections::HashMap;
 use std::time::Instant;
 
 #[cfg(any(feature = "sync", feature = "async"))]
 use ureq::Body;
+#[cfg(any(feature = "sync", feature = "async"))]
+use ureq::RequestBuilder;
 #[cfg(any(feature = "sync", feature = "async"))]
 use ureq::http::Response;
 use ureq::http::Uri;
 
 use crate::HTTPVerb;
 
-pub mod error;
 #[cfg(feature = "async")]
-pub mod fetching_async;
-#[cfg(feature = "sync")]
-pub mod fetching_sync;
-pub mod http_request;
+pub mod async_funcs;
+pub mod error;
 pub mod parsers;
 pub mod parsing;
+#[cfg(feature = "sync")]
+pub mod sync_funcs;
 
 /// A raw API request, used to send custom requests to the API
 #[derive(Debug, Clone, bon::Builder)]
@@ -28,6 +30,9 @@ pub struct ApiRequest<P> {
 
     /// The http verb of the api request
     verb: HTTPVerb,
+
+    #[builder(default)]
+    headers: HashMap<String, String>,
 
     /// The body of the request
     body: Option<serde_json::Value>,
@@ -55,6 +60,10 @@ impl<T> ApiRequest<T> {
         self.verb
     }
 
+    pub fn headers(&self) -> &HashMap<String, String> {
+        &self.headers
+    }
+
     pub fn body(&self) -> &Option<serde_json::Value> {
         &self.body
     }
@@ -74,6 +83,18 @@ impl<T> ApiRequest<T> {
 
         let secs_to_wait = self.tries * (self.tries as f32 / 0.5).round() as u32;
         self.retry_after = Instant::now() + Duration::from_secs(secs_to_wait as u64)
+    }
+
+    /// Add the config to an ureq request
+    #[cfg(any(feature = "sync", feature = "async"))]
+    pub(super) fn config_req<Bod>(&self, req: RequestBuilder<Bod>) -> RequestBuilder<Bod> {
+        let mut req = req.config().http_status_as_error(false).build();
+
+        for (name, value) in &self.headers {
+            req = req.header(name, value)
+        }
+
+        req
     }
 }
 

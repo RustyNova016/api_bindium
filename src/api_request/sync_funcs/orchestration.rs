@@ -1,4 +1,3 @@
-use snafu::ResultExt;
 use ureq::Body;
 use ureq::http::Response;
 
@@ -6,65 +5,30 @@ use crate::ApiClient;
 use crate::ApiRequest;
 use crate::ApiRequestError;
 use crate::api_request::error::MaxRetriesExceededSnafu;
-use crate::api_request::error::UreqSnafu;
 
 use crate::api_request::get_temporary_error_timeout;
 use crate::api_request::parsers::Parser;
-use crate::utils::sleep_until_async;
+use crate::utils::sleep_until;
 
 impl<T> ApiRequest<T>
 where
     T: Sync,
 {
-    /// Send the request without any fluff.
-    ///
-    /// This is an advanced function. You are probably looking for [Self::send_async]
-    #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn send_request_raw_async(
-        &self,
-        client: &ApiClient,
-    ) -> Result<Response<Body>, ApiRequestError> {
-        let uri = self.uri.to_owned();
-        let body = self.body.to_owned();
-        let agent = client.agent.to_owned();
-        let verb = self.verb;
-
-        #[cfg(feature = "tracing")]
-        tracing::debug!(
-            "Sending {} request at {uri} (Try {})",
-            self.verb,
-            self.tries
-        );
-
-        blocking::unblock(move || {
-            match verb {
-                crate::HTTPVerb::Get => Self::send_without_body(agent.get(&uri)),
-                crate::HTTPVerb::Post => Self::send_with_body(agent.post(&uri), body),
-            }
-            .context(UreqSnafu { uri })
-        })
-        .await
-    }
-
     /// Send the request, deal with errors and ratelimiting
     ///
     /// Returns `Ok(None)` on a retriable error
     ///
     /// This is an advanced function. You are probably looking for [Self::send_async]
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn try_send_request_async(
+    fn try_send_request(
         &mut self,
         client: &ApiClient,
     ) -> Result<Option<Response<Body>>, ApiRequestError> {
         // Wait to be ready
-        sleep_until_async(self.retry_after).await;
-
-        // Wait for the ratelimit
-        #[cfg(feature = "rate_limit")]
-        client.await_rate_limit().await;
+        sleep_until(self.retry_after);
 
         // Try fetching the api
-        let response = match self.send_request_raw_async(client).await {
+        let response = match self.convert_and_send(&client.agent) {
             Ok(val) => val,
             Err(err) => {
                 if err.is_retryable() {
@@ -91,12 +55,9 @@ where
     ///
     /// This is an advanced function. You are probably looking for [Self::send_async]
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn send_with_retries_async(
-        &mut self,
-        client: &ApiClient,
-    ) -> Result<Response<Body>, ApiRequestError> {
+    fn send_with_retries(&mut self, client: &ApiClient) -> Result<Response<Body>, ApiRequestError> {
         while self.tries < client.max_retries {
-            if let Some(res) = self.try_send_request_async(client).await? {
+            if let Some(res) = self.try_send_request(client)? {
                 return Ok(res);
             }
         }
@@ -106,11 +67,11 @@ where
 
     /// Send the api request with retries and return the parsed data.
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn send_async<O>(&mut self, client: &ApiClient) -> Result<O, ApiRequestError>
+    pub fn send<O>(&mut self, client: &ApiClient) -> Result<O, ApiRequestError>
     where
         T: Parser<O>,
     {
-        let mut response = self.send_with_retries_async(client).await?;
+        let mut response = self.send_with_retries(client)?;
         self.parse_response(&mut response)
     }
 }
