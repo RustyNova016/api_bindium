@@ -46,7 +46,7 @@ pub enum ApiRequestError {
 impl ApiRequestError {
     /// Return true if the error is temporary and should be retried
     pub fn is_retryable(&self) -> bool {
-        self.is_timeout() || self.is_connection_reset()
+        self.is_timeout() || self.is_connection_reset() || self.is_peer_disconnected()
     }
 
     /// Return true if the error is a timeout
@@ -78,5 +78,21 @@ impl ApiRequestError {
         };
 
         std_error.kind() == std::io::ErrorKind::ConnectionReset
+    }
+
+    pub fn is_peer_disconnected(&self) -> bool {
+        let Some(source) = self.source() else {
+            return false;
+        };
+
+        let Some(ureq_error) = source.downcast_ref::<ureq::Error>() else {
+            return false;
+        };
+
+        let ureq::Error::Io(std_error) = ureq_error else {
+            return false;
+        };
+
+        std_error.kind() == std::io::ErrorKind::UnexpectedEof
     }
 }
