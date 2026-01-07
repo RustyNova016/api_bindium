@@ -3,6 +3,11 @@ name = "api_bindium"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.85.0"
+authors = ["RustyNova"]
+description = "Framework for api binding crates"
+keywords = ["api_bindings", "foundation", "framework"]
+license = "MIT OR AGPL-3.0-or-later"
+repository = "https://github.com/RustyNova016/api_bindium"
 
 [dependencies]
 # Fetching
