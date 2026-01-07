@@ -55,7 +55,7 @@ where
     ///
     /// This is an advanced function. You are probably looking for [Self::send_async]
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    fn send_with_retries(&mut self, client: &ApiClient) -> Result<Response<Body>, ApiRequestError> {
+    pub fn send_with_retries(&mut self, client: &ApiClient) -> Result<Response<Body>, ApiRequestError> {
         while self.tries < client.max_retries {
             if let Some(res) = self.try_send_request(client)? {
                 return Ok(res);
