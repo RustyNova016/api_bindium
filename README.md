@@ -1,6 +1,13 @@
 # api_bindium
 
-A crate to provide foundations for creating API binding crates.
+A lightweight crate to provide foundations for creating API binding crates. This aim to provide "batteries included" level of features while keeping itself lightweight
+
+The async api is runtime agnostic (tokio isn't even in the tree!)
+
+## Usage exemples
+
+You can find exemple crates at:
+- [listenbrainz_rs](https://github.com/RustyNova016/listenbrainz_rs)
 
 ## Feature flags
 
