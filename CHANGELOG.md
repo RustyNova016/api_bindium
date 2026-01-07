@@ -1,3 +1,16 @@
+## [0.1.1] - 2026-01-07
+
+### 🚀 Features
+
+- Make send_with_retries public
+
+### 📚 Documentation
+
+- Documentation improvements
+
+### ⚙️ Miscellaneous Tasks
+
+- Bump version
 ## [0.1.0] - 2026-01-07
 
 ### 🚀 Features
@@ -30,3 +43,5 @@
 
 - Rename crate
 - Use each-feature instead of powerset
+- Release v0.1.0
+- Crates.io requirements
