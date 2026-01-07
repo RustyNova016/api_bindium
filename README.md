@@ -4,9 +4,9 @@ A lightweight crate to provide foundations for creating API binding crates. This
 
 The async api is runtime agnostic (tokio isn't even in the tree!)
 
-## Usage exemples
+## Usage examples
 
-You can find exemple crates at:
+You can find example crates at:
 - [listenbrainz_rs](https://github.com/RustyNova016/listenbrainz_rs)
 
 ## Feature flags

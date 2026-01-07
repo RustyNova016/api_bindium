@@ -52,18 +52,22 @@ pub struct ApiRequest<P> {
 }
 
 impl<T> ApiRequest<T> {
+    /// Return the uri to be fetched
     pub fn uri(&self) -> &Uri {
         &self.uri
     }
 
+    /// Return the verb of the request
     pub fn verb(&self) -> HTTPVerb {
         self.verb
     }
 
+    /// Return the headers of the request
     pub fn headers(&self) -> &HashMap<String, String> {
         &self.headers
     }
 
+    /// Return the body of the request
     pub fn body(&self) -> &Option<serde_json::Value> {
         &self.body
     }
