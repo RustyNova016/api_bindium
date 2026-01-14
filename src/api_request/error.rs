@@ -41,6 +41,19 @@ pub enum ApiRequestError {
         #[cfg(feature = "backtrace")]
         backtrace: snafu::Backtrace,
     },
+
+    #[cfg(feature = "image")]
+    #[snafu(display("Couldn't parse the image"))]
+    ImageParsingError {
+        source: image::ImageError,
+        data: Vec<u8>,
+
+        #[snafu(implicit)]
+        location: snafu::Location,
+
+        #[cfg(feature = "backtrace")]
+        backtrace: snafu::Backtrace,
+    },
 }
 
 impl ApiRequestError {
