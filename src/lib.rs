@@ -1,5 +1,7 @@
 // Until `snafu` got something to easily box error sources, we ignore it
 #![allow(clippy::result_large_err)]
+// Add feature warnings
+#![cfg_attr(docsrs, feature(doc_auto_cfg))]
 
 pub mod api_request;
 pub mod client;
