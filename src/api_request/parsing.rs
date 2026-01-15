@@ -13,6 +13,6 @@ impl<P> ApiRequest<P> {
     where
         P: Parser<T>,
     {
-        P::parse(response)
+        P::parse(response, self.max_body_size)
     }
 }

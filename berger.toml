@@ -2,6 +2,8 @@
 path="./"
 default_branch="master"
 
+remote_url = "https://github.com/RustyNova016/api_bindium"
+
     [repository.api_bindium.release]
     git_cliff = true
 

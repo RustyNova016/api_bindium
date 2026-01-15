@@ -1,5 +1,8 @@
 use std::collections::HashMap;
 
+#[cfg(feature = "async")]
+use macro_rules_attribute::apply;
+
 use crate::ApiRequest;
 use crate::api_request::parsers::json::JsonParser;
 use crate::endpoints::EndpointUriBuilder;
@@ -26,6 +29,20 @@ fn test_get_query() {
 
     let client = ApiClient::builder().build();
     let res = httpbin_get_request("hello", "world").send(&client).unwrap();
+
+    assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
+}
+
+#[cfg(feature = "async")]
+#[apply(smol_macros::test!)]
+async fn test_get_query_async() {
+    use crate::ApiClient;
+
+    let client = ApiClient::builder().build();
+    let res = httpbin_get_request("hello", "world")
+        .send_async(&client)
+        .await
+        .unwrap();
 
     assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
 }

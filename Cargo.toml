@@ -17,6 +17,7 @@ governor = { version = "0.10.2", optional = true }
 # Parsing
 serde_core = { version = "1.0.220" }
 serde_json = { version = "1.0.145" }
+image = { version = "0.25.9", optional = true }
 
 # Async
 blocking = { version = "1.6.2", optional = true }
@@ -33,9 +34,11 @@ url-escape = "0.1.1"
 
 [dev-dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
+macro_rules_attribute = "0.2.2"
+smol-macros = "0.1.1"
 
 [features]
-default = ["rustls"]
+default = ["rustls", "sync"]
 
 # Async
 sync = []
@@ -47,6 +50,9 @@ rustls = ["ureq/rustls"]
 rate_limit = ["dep:governor", "async"]
 cookies = ["ureq/cookies"]
 
+# Parsing
+image = ["dep:image"]
+
 # Debugging
 backtrace = []
 tracing = ["dep:tracing"]
@@ -55,9 +61,20 @@ hotpath-alloc = ["hotpath/hotpath-alloc"]
 hotpath-off = ["hotpath/hotpath-off"]
 
 [package.metadata.docs.rs]
+all-features = true
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
 
 [[example]]
 required-features = ["sync"]
 name = "get_request"
 path = "examples/get_request.rs"
+
+[[example]]
+required-features = ["sync"]
+name = "headers"
+path = "examples/headers.rs"
+
+[[example]]
+required-features = ["sync"]
+name = "post_request"
+path = "examples/post_request.rs"
