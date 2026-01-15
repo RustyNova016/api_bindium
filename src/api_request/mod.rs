@@ -39,7 +39,10 @@ pub struct ApiRequest<P> {
 
     /// The parser to use on the response
     #[builder(skip)]
-    pub parser: PhantomData<P>,
+    parser: PhantomData<P>,
+
+    #[builder(skip = 10 * 1024 * 1024)]
+    max_body_size: u64,
 
     // === Fetching state ===
     /// The current number of times the request has been tried

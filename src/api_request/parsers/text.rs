@@ -9,9 +9,15 @@ pub struct TextParser;
 impl Parser<String> for TextParser {
     fn parse(
         response: &mut ureq::http::Response<ureq::Body>,
+        max_size: u64,
     ) -> Result<String, crate::ApiRequestError> {
-        response.body_mut().read_to_string().context(UreqSnafu {
-            uri: response.get_uri().to_owned(),
-        })
+        response
+            .body_mut()
+            .with_config()
+            .limit(max_size)
+            .read_to_string()
+            .context(UreqSnafu {
+                uri: response.get_uri().to_owned(),
+            })
     }
 }

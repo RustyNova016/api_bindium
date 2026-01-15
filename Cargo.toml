@@ -38,7 +38,7 @@ macro_rules_attribute = "0.2.2"
 smol-macros = "0.1.1"
 
 [features]
-default = ["rustls", "async"]
+default = ["rustls", "sync"]
 
 # Async
 sync = []
@@ -61,12 +61,18 @@ hotpath-alloc = ["hotpath/hotpath-alloc"]
 hotpath-off = ["hotpath/hotpath-off"]
 
 [package.metadata.docs.rs]
+all-features = true
 cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
 
 [[example]]
 required-features = ["sync"]
 name = "get_request"
 path = "examples/get_request.rs"
+
+[[example]]
+required-features = ["sync"]
+name = "headers"
+path = "examples/headers.rs"
 
 [[example]]
 required-features = ["sync"]

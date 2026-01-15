@@ -9,8 +9,6 @@ pub mod image;
 pub mod json;
 pub mod text;
 
-
 pub trait Parser<T> {
-    fn parse(response: &mut Response<Body>) -> Result<T, ApiRequestError>;
+    fn parse(response: &mut Response<Body>, max_size: u64) -> Result<T, ApiRequestError>;
 }
-

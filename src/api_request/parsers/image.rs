@@ -11,10 +11,16 @@ pub struct ImageParser;
 impl Parser<DynamicImage> for ImageParser {
     fn parse(
         response: &mut ureq::http::Response<ureq::Body>,
+        max_size: u64,
     ) -> Result<DynamicImage, crate::ApiRequestError> {
-        let bytes = response.body_mut().read_to_vec().context(UreqSnafu {
-            uri: response.get_uri().to_owned(),
-        })?;
+        let bytes = response
+            .body_mut()
+            .with_config()
+            .limit(max_size)
+            .read_to_vec()
+            .context(UreqSnafu {
+                uri: response.get_uri().to_owned(),
+            })?;
 
         image::load_from_memory(&bytes).context(ImageParsingSnafu { data: bytes })
     }

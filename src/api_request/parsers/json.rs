@@ -15,8 +15,11 @@ impl<T> Parser<T> for JsonParser<T>
 where
     T: Sized + DeserializeOwned,
 {
-    fn parse(response: &mut ureq::http::Response<ureq::Body>) -> Result<T, crate::ApiRequestError> {
-        let text = TextParser::parse(response)?;
+    fn parse(
+        response: &mut ureq::http::Response<ureq::Body>,
+        max_size: u64,
+    ) -> Result<T, crate::ApiRequestError> {
+        let text = TextParser::parse(response, max_size)?;
 
         // Try to deserialize as our result
         let err = match serde_json::from_str::<T>(&text) {
