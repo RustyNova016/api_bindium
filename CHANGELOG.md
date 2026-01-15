@@ -1,3 +1,18 @@
+## [0.2.1] - 2026-01-15
+
+### 🚀 Features
+
+- Set send_with_retries_async publiic like the sync version
+- Docs.rs doesn't scrap exemples
+- Allow changing the parser of a api request
+
+### 💼 Other
+
+- *(deps)* Bump actions/checkout from 5 to 6
+
+### ⚙️ Miscellaneous Tasks
+
+- Reexport governor as a module
 ## [0.2.0] - 2026-01-15
 
 ### 🚀 Features
