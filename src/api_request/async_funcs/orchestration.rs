@@ -60,7 +60,7 @@ where
     ///
     /// This is an advanced function. You are probably looking for [Self::send_async]
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    async fn send_with_retries_async(
+    pub async fn send_with_retries_async(
         &mut self,
         client: &ApiClient,
     ) -> Result<Response<Body>, ApiRequestError> {

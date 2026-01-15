@@ -53,7 +53,7 @@ where
 
     /// Send the request, and retry on failure
     ///
-    /// This is an advanced function. You are probably looking for [Self::send_async]
+    /// This is an advanced function. You are probably looking for [Self::send]
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
     pub fn send_with_retries(
         &mut self,

@@ -103,6 +103,20 @@ impl<T> ApiRequest<T> {
 
         req
     }
+
+    /// Set a new parser for the api request.
+    pub fn set_parser<U>(self) -> ApiRequest<U> {
+        ApiRequest {
+            body: self.body,
+            headers: self.headers,
+            max_body_size: self.max_body_size,
+            parser: Default::default(),
+            retry_after: self.retry_after,
+            tries: self.tries,
+            uri: self.uri,
+            verb: self.verb,
+        }
+    }
 }
 
 #[cfg(any(feature = "sync", feature = "async"))]
