@@ -66,15 +66,18 @@ cargo-args = ["-Zunstable-options", "-Zrustdoc-scrape-examples"]
 
 [[example]]
 required-features = ["sync"]
+doc-scrape-examples = true
 name = "get_request"
 path = "examples/get_request.rs"
 
 [[example]]
 required-features = ["sync"]
+doc-scrape-examples = true
 name = "headers"
 path = "examples/headers.rs"
 
 [[example]]
 required-features = ["sync"]
+doc-scrape-examples = true
 name = "post_request"
 path = "examples/post_request.rs"
