@@ -1,3 +1,13 @@
+## [0.2.0] - 2026-01-15
+
+### 🚀 Features
+
+- Image parser
+- Set max body size in API request
+
+### ⚙️ Miscellaneous Tasks
+
+- Add semver-checks
 ## [0.1.1] - 2026-01-07
 
 ### 🚀 Features
