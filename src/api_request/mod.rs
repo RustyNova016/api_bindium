@@ -14,11 +14,13 @@ use ureq::http::Uri;
 use crate::HTTPVerb;
 
 #[cfg(feature = "async")]
+#[cfg_attr(docsrs, doc(cfg(feature = "async")))]
 pub mod async_funcs;
 pub mod error;
 pub mod parsers;
 pub mod parsing;
 #[cfg(feature = "sync")]
+#[cfg_attr(docsrs, doc(cfg(feature = "sync")))]
 pub mod sync_funcs;
 
 /// A raw API request, used to send custom requests to the API
