@@ -1,6 +1,4 @@
-use ureq::Body;
-use ureq::http::Response;
-
+use crate::ApiRequest;
 use crate::ApiRequestError;
 
 pub mod bytes;
@@ -9,6 +7,13 @@ pub mod image;
 pub mod json;
 pub mod text;
 
-pub trait Parser<T> {
-    fn parse(response: &mut Response<Body>, max_size: u64) -> Result<T, ApiRequestError>;
+/// Parse a response object to a specific type.
+///
+/// # Examples
+///
+/// See [text::TextParser], [json::JsonParser]
+pub trait Parser<R> {
+    type Output;
+
+    fn parse<P>(request: &ApiRequest<P>, response: R) -> Result<Self::Output, ApiRequestError>;
 }

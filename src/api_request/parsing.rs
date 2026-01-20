@@ -7,12 +7,12 @@ use crate::api_request::error::ApiRequestError;
 use crate::api_request::parsers::Parser;
 
 impl<P> ApiRequest<P> {
-    /// Parse the request json5
+    /// Parse the request json
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub fn parse_response<T>(&self, response: &mut Response<Body>) -> Result<T, ApiRequestError>
+    pub fn parse_response(&self, response: Response<Body>) -> Result<P::Output, ApiRequestError>
     where
-        P: Parser<T>,
+        P: Parser<Response<Body>>,
     {
-        P::parse(response, self.max_body_size)
+        P::parse(self, response)
     }
 }

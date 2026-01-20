@@ -25,7 +25,7 @@ pub mod sync_funcs;
 
 /// A raw API request, used to send custom requests to the API
 #[derive(Debug, Clone, bon::Builder)]
-pub struct ApiRequest<P> {
+pub struct ApiRequest<P: ?Sized> {
     /// The uri to fetch
     #[builder(into)]
     uri: Uri,
@@ -75,6 +75,10 @@ impl<T> ApiRequest<T> {
     /// Return the body of the request
     pub fn body(&self) -> &Option<serde_json::Value> {
         &self.body
+    }
+
+    pub fn max_body_size(&self) -> u64 {
+        self.max_body_size
     }
 
     /// Reset the api request back to 0 tries
