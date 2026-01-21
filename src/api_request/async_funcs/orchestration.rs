@@ -10,9 +10,9 @@ use crate::api_request::get_temporary_error_timeout;
 use crate::api_request::parsers::Parser;
 use crate::utils::sleep_until_async;
 
-impl<T> ApiRequest<T>
+impl<P> ApiRequest<P>
 where
-    T: Sync,
+    P: Sync,
 {
     /// Send the request, deal with errors and ratelimiting
     ///
@@ -75,11 +75,11 @@ where
 
     /// Send the api request with retries and return the parsed data.
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn send_async<O>(&mut self, client: &ApiClient) -> Result<O, ApiRequestError>
+    pub async fn send_async(&mut self, client: &ApiClient) -> Result<P::Output, ApiRequestError>
     where
-        T: Parser<O>,
+        P: Parser<Response<Body>>,
     {
-        let mut response = self.send_with_retries_async(client).await?;
-        self.parse_response(&mut response)
+        let response = self.send_with_retries_async(client).await?;
+        self.parse_response(response)
     }
 }

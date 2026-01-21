@@ -11,15 +11,17 @@ pub struct JsonParser<T>(PhantomData<T>)
 where
     T: Sized + DeserializeOwned;
 
-impl<T> Parser<T> for JsonParser<T>
+impl<T> Parser<ureq::http::Response<ureq::Body>> for JsonParser<T>
 where
     T: Sized + DeserializeOwned,
 {
-    fn parse(
-        response: &mut ureq::http::Response<ureq::Body>,
-        max_size: u64,
-    ) -> Result<T, crate::ApiRequestError> {
-        let text = TextParser::parse(response, max_size)?;
+    type Output = T;
+
+    fn parse<P>(
+        request: &crate::ApiRequest<P>,
+        response: ureq::http::Response<ureq::Body>,
+    ) -> Result<Self::Output, crate::ApiRequestError> {
+        let text = TextParser::parse(request, response)?;
 
         // Try to deserialize as our result
         let err = match serde_json::from_str::<T>(&text) {

@@ -8,15 +8,17 @@ use crate::api_request::parsers::Parser;
 
 pub struct ImageParser;
 
-impl Parser<DynamicImage> for ImageParser {
-    fn parse(
-        response: &mut ureq::http::Response<ureq::Body>,
-        max_size: u64,
-    ) -> Result<DynamicImage, crate::ApiRequestError> {
+impl Parser<ureq::http::Response<ureq::Body>> for ImageParser {
+    type Output = DynamicImage;
+
+    fn parse<P>(
+        request: &crate::ApiRequest<P>,
+        mut response: ureq::http::Response<ureq::Body>,
+    ) -> Result<Self::Output, crate::ApiRequestError> {
         let bytes = response
             .body_mut()
             .with_config()
-            .limit(max_size)
+            .limit(request.max_body_size())
             .read_to_vec()
             .context(UreqSnafu {
                 uri: response.get_uri().to_owned(),
