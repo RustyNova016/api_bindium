@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use api_bindium::ApiClient;
 use api_bindium::ApiRequest;
 use api_bindium::HTTPVerb;
-use api_bindium::api_request::parsers::json::JsonParser;
+use api_bindium::JsonParser;
 use api_bindium::endpoints::EndpointUriBuilder;
 
 fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinGetResponse>> {
@@ -21,7 +21,7 @@ fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinG
     ApiRequest::builder()
         .headers(headers)
         .uri(uri)
-        .verb(HTTPVerb::Get)
+        .verb(HTTPVerb::Get).parser(JsonParser::default())
         .build()
 }
 

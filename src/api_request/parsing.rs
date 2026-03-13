@@ -4,7 +4,7 @@ use ureq::http::Response;
 use crate::ApiRequest;
 use crate::error::ApiRequestError;
 
-use crate::api_request::parsers::Parser;
+use crate::Parser;
 
 impl<P> ApiRequest<P> {
     /// Parse the request json

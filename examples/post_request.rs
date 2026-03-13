@@ -1,7 +1,7 @@
 use api_bindium::ApiClient;
 use api_bindium::ApiRequest;
 use api_bindium::HTTPVerb;
-use api_bindium::api_request::parsers::json::JsonParser;
+use api_bindium::JsonParser;
 use api_bindium::endpoints::EndpointUriBuilder;
 use serde_json::json;
 
@@ -15,6 +15,7 @@ fn httpbin_post_request() -> ApiRequest<JsonParser<HttpBinPostResponse>> {
             json!({
                 "hello": "world"
             }),
+            JsonParser::default(),
         )
         .unwrap()
 }

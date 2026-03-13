@@ -7,7 +7,7 @@ use crate::ApiRequestError;
 use crate::error::MaxRetriesExceededSnafu;
 
 use crate::api_request::get_temporary_error_timeout;
-use crate::api_request::parsers::Parser;
+use crate::Parser;
 use crate::utils::sleep_until;
 
 impl<P> ApiRequest<P>

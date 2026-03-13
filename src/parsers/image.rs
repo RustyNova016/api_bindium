@@ -4,8 +4,9 @@ use ureq::ResponseExt as _;
 
 use crate::error::ImageParsingSnafu;
 use crate::error::UreqSnafu;
-use crate::api_request::parsers::Parser;
+use crate::parsers::Parser;
 
+/// Parse the response into an [`image::DynamicImage`]
 pub struct ImageParser;
 
 impl Parser<ureq::http::Response<ureq::Body>> for ImageParser {
@@ -32,12 +33,13 @@ impl Parser<ureq::http::Response<ureq::Body>> for ImageParser {
 #[cfg(test)]
 pub mod test {
     use crate::ApiClient;
-    use crate::api_request::parsers::image::ImageParser;
     use crate::endpoints::EndpointUriBuilder;
 
     #[cfg(feature = "sync")]
     #[test]
     pub fn test_image_parsing() {
+        use crate::parsers::image::ImageParser;
+
         let mut req: crate::ApiRequest<ImageParser> = EndpointUriBuilder::new()
             .https()
             .set_authority("avatars.githubusercontent.com")

@@ -1,7 +1,7 @@
 use serde_json::json;
 
 use crate::ApiRequest;
-use crate::api_request::parsers::json::JsonParser;
+use crate::JsonParser;
 use crate::endpoints::EndpointUriBuilder;
 
 fn httpbin_post_request() -> ApiRequest<JsonParser<HttpBinPostResponse>> {

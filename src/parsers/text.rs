@@ -2,12 +2,13 @@ use snafu::ResultExt as _;
 use ureq::ResponseExt as _;
 
 use crate::error::UreqSnafu;
-use crate::api_request::parsers::Parser;
+use crate::parsers::Parser;
 
-pub struct ByteParser;
+/// Parse the response into a plain [`String`]
+pub struct TextParser;
 
-impl Parser<ureq::http::Response<ureq::Body>> for ByteParser {
-    type Output = Vec<u8>;
+impl Parser<ureq::http::Response<ureq::Body>> for TextParser {
+    type Output = String;
 
     fn parse<P>(
         &self,
@@ -18,7 +19,7 @@ impl Parser<ureq::http::Response<ureq::Body>> for ByteParser {
             .body_mut()
             .with_config()
             .limit(request.max_body_size())
-            .read_to_vec()
+            .read_to_string()
             .context(UreqSnafu {
                 uri: response.get_uri().to_owned(),
             })

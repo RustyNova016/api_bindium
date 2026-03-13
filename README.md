@@ -1,6 +1,6 @@
 # api_bindium
 
-A lightweight crate to provide foundations for creating API binding crates. This aim to provide "batteries included" level of features while keeping itself lightweight
+A lightweight crate to provide foundations for creating API binding crates. This aim to provide "batteries included" level of features while keeping itself small. Most of the fonctionality is gated behind its own feature flag for compiling just what you need
 
 The async api is runtime agnostic (tokio isn't even in the tree!)
 
@@ -12,7 +12,7 @@ You can find example crates at:
 ## Feature flags
 
 Async: 
-- `sync`: Enable the sync api
+- `sync` (default): Enable the sync api
 - `async`: Enable the async api (Sync and Async aren't mutually exclusive)
 
 Fetching:

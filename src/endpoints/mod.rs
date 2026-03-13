@@ -8,7 +8,7 @@ use ureq::http::uri::InvalidUri;
 
 use crate::ApiRequest;
 use crate::HTTPVerb;
-use crate::api_request::parsers::Parser;
+use crate::Parser;
 
 pub mod authority;
 pub mod path;

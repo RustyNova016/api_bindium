@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use macro_rules_attribute::apply;
 
 use crate::ApiRequest;
-use crate::api_request::parsers::json::JsonParser;
+use crate::JsonParser;
 use crate::endpoints::EndpointUriBuilder;
 
 fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinGetResponse>> {

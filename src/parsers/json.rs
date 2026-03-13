@@ -3,10 +3,11 @@ use core::marker::PhantomData;
 use serde_core::de::DeserializeOwned;
 use snafu::ResultExt as _;
 
-use crate::api_request::parsers::Parser;
-use crate::api_request::parsers::text::TextParser;
+use crate::TextParser;
+use crate::parsers::Parser;
 use crate::error::JsonParsingSnafu;
 
+/// Parse a json response into T
 #[derive(Debug)]
 pub struct JsonParser<T>(PhantomData<T>)
 where
