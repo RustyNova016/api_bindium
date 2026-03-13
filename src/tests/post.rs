@@ -14,6 +14,7 @@ fn httpbin_post_request() -> ApiRequest<JsonParser<HttpBinPostResponse>> {
             json!({
                 "hello": "world"
             }),
+            JsonParser::default(),
         )
         .unwrap()
 }

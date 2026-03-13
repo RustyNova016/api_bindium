@@ -13,7 +13,7 @@ fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinG
         .set_authority("httpbin.org")
         .set_path("/get")
         .add_parameter(arg, value)
-        .into_api_request(crate::HTTPVerb::Get)
+        .into_api_request(crate::HTTPVerb::Get, JsonParser::default())
         .unwrap()
 }
 

@@ -15,5 +15,9 @@ pub mod text;
 pub trait Parser<R> {
     type Output;
 
-    fn parse<P>(request: &ApiRequest<P>, response: R) -> Result<Self::Output, ApiRequestError>;
+    fn parse<P>(
+        &self,
+        request: &ApiRequest<P>,
+        response: R,
+    ) -> Result<Self::Output, ApiRequestError>;
 }

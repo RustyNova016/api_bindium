@@ -3,10 +3,11 @@ use core::marker::PhantomData;
 use serde_core::de::DeserializeOwned;
 use snafu::ResultExt as _;
 
-use crate::error::JsonParsingSnafu;
 use crate::api_request::parsers::Parser;
 use crate::api_request::parsers::text::TextParser;
+use crate::error::JsonParsingSnafu;
 
+#[derive(Debug)]
 pub struct JsonParser<T>(PhantomData<T>)
 where
     T: Sized + DeserializeOwned;
@@ -18,10 +19,11 @@ where
     type Output = T;
 
     fn parse<P>(
+        &self,
         request: &crate::ApiRequest<P>,
         response: ureq::http::Response<ureq::Body>,
     ) -> Result<Self::Output, crate::ApiRequestError> {
-        let text = TextParser::parse(request, response)?;
+        let text = TextParser.parse(request, response)?;
 
         // Try to deserialize as our result
         let err = match serde_json::from_str::<T>(&text) {
@@ -31,5 +33,14 @@ where
 
         // Not a server error? Then it's a problem with our models. Let's send the serde error
         Err(err).with_context(|_| JsonParsingSnafu { data: text })
+    }
+}
+
+impl<T> Default for JsonParser<T>
+where
+    T: Sized + DeserializeOwned,
+{
+    fn default() -> Self {
+        Self(PhantomData::default())
     }
 }

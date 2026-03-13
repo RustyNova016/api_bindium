@@ -12,6 +12,7 @@ impl Parser<ureq::http::Response<ureq::Body>> for ImageParser {
     type Output = DynamicImage;
 
     fn parse<P>(
+        &self,
         request: &crate::ApiRequest<P>,
         mut response: ureq::http::Response<ureq::Body>,
     ) -> Result<Self::Output, crate::ApiRequestError> {
@@ -42,7 +43,7 @@ pub mod test {
             .set_authority("avatars.githubusercontent.com")
             .set_path("/u/50844553")
             .add_parameter("v", 4)
-            .into_api_request(crate::HTTPVerb::Get)
+            .into_api_request(crate::HTTPVerb::Get, ImageParser)
             .unwrap();
 
         let client = ApiClient::builder().build();

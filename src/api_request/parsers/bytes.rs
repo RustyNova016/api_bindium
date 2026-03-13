@@ -10,6 +10,7 @@ impl Parser<ureq::http::Response<ureq::Body>> for ByteParser {
     type Output = Vec<u8>;
 
     fn parse<P>(
+        &self,
         request: &crate::ApiRequest<P>,
         mut response: ureq::http::Response<ureq::Body>,
     ) -> Result<Self::Output, crate::ApiRequestError> {

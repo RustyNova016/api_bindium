@@ -1,4 +1,3 @@
-use core::marker::PhantomData;
 use core::time::Duration;
 use std::collections::HashMap;
 use std::time::Instant;
@@ -24,7 +23,7 @@ pub mod sync_funcs;
 
 /// A raw API request, used to send custom requests to the API
 #[derive(Debug, Clone, bon::Builder)]
-pub struct ApiRequest<P: ?Sized> {
+pub struct ApiRequest<P> {
     /// The uri to fetch
     #[builder(into)]
     uri: Uri,
@@ -39,8 +38,7 @@ pub struct ApiRequest<P: ?Sized> {
     body: Option<serde_json::Value>,
 
     /// The parser to use on the response
-    #[builder(skip)]
-    parser: PhantomData<P>,
+    parser: P,
 
     #[builder(skip = 10 * 1024 * 1024)]
     max_body_size: u64,
@@ -110,12 +108,12 @@ impl<T> ApiRequest<T> {
     }
 
     /// Set a new parser for the api request.
-    pub fn set_parser<U>(self) -> ApiRequest<U> {
+    pub fn set_parser<U>(self, parser: U) -> ApiRequest<U> {
         ApiRequest {
             body: self.body,
             headers: self.headers,
             max_body_size: self.max_body_size,
-            parser: Default::default(),
+            parser,
             retry_after: self.retry_after,
             tries: self.tries,
             uri: self.uri,
@@ -140,4 +138,3 @@ fn get_temporary_error_timeout(response: &Response<Body>) -> Option<Instant> {
 
     Some(Instant::now() + Duration::from_secs(retry_after + 1))
 }
-

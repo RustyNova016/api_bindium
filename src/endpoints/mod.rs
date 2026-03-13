@@ -27,17 +27,26 @@ impl<S> EndpointUriBuilder<S> {
         self.try_into()
     }
 
-    pub fn into_api_request<P, T>(self, verb: HTTPVerb) -> Result<ApiRequest<P>, UriBuilderError>
+    pub fn into_api_request<P, T>(
+        self,
+        verb: HTTPVerb,
+        parser: P,
+    ) -> Result<ApiRequest<P>, UriBuilderError>
     where
         P: Parser<T>,
     {
-        Ok(ApiRequest::builder().uri(self.to_uri()?).verb(verb).build())
+        Ok(ApiRequest::builder()
+            .uri(self.to_uri()?)
+            .verb(verb)
+            .parser(parser)
+            .build())
     }
 
     pub fn into_api_request_with_body<P, T>(
         self,
         verb: HTTPVerb,
         body: serde_json::Value,
+        parser: P,
     ) -> Result<ApiRequest<P>, UriBuilderError>
     where
         P: Parser<T>,
@@ -46,6 +55,7 @@ impl<S> EndpointUriBuilder<S> {
             .uri(self.to_uri()?)
             .verb(verb)
             .body(body)
+            .parser(parser)
             .build())
     }
 }

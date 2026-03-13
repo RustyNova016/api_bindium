@@ -13,6 +13,6 @@ impl<P> ApiRequest<P> {
     where
         P: Parser<Response<Body>>,
     {
-        P::parse(self, response)
+        self.parser.parse(self, response)
     }
 }
