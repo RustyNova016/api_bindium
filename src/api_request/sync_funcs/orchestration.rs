@@ -4,7 +4,7 @@ use ureq::http::Response;
 use crate::ApiClient;
 use crate::ApiRequest;
 use crate::ApiRequestError;
-use crate::api_request::error::MaxRetriesExceededSnafu;
+use crate::error::MaxRetriesExceededSnafu;
 
 use crate::api_request::get_temporary_error_timeout;
 use crate::api_request::parsers::Parser;

@@ -16,7 +16,6 @@ use crate::HTTPVerb;
 #[cfg(feature = "async")]
 #[cfg_attr(docsrs, doc(cfg(feature = "async")))]
 pub mod async_funcs;
-pub mod error;
 pub mod parsers;
 pub mod parsing;
 #[cfg(feature = "sync")]
@@ -141,3 +140,4 @@ fn get_temporary_error_timeout(response: &Response<Body>) -> Option<Instant> {
 
     Some(Instant::now() + Duration::from_secs(retry_after + 1))
 }
+

@@ -2,7 +2,7 @@ use ureq::Body;
 use ureq::http::Response;
 
 use crate::ApiRequest;
-use crate::api_request::error::ApiRequestError;
+use crate::error::ApiRequestError;
 
 use crate::api_request::parsers::Parser;
 

@@ -2,8 +2,8 @@ use image::DynamicImage;
 use snafu::ResultExt;
 use ureq::ResponseExt as _;
 
-use crate::api_request::error::ImageParsingSnafu;
-use crate::api_request::error::UreqSnafu;
+use crate::error::ImageParsingSnafu;
+use crate::error::UreqSnafu;
 use crate::api_request::parsers::Parser;
 
 pub struct ImageParser;

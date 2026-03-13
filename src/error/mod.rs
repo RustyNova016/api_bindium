@@ -4,7 +4,7 @@ use snafu::Snafu;
 use ureq::http::Uri;
 
 #[derive(Debug, Snafu)]
-#[snafu(visibility(pub(super)))]
+#[snafu(visibility(pub(crate)))]
 pub enum ApiRequestError {
     #[snafu(display("Couldn't successfully send the http request to {uri}"))]
     UreqError {

@@ -3,7 +3,7 @@ use core::marker::PhantomData;
 use serde_core::de::DeserializeOwned;
 use snafu::ResultExt as _;
 
-use crate::api_request::error::JsonParsingSnafu;
+use crate::error::JsonParsingSnafu;
 use crate::api_request::parsers::Parser;
 use crate::api_request::parsers::text::TextParser;
 

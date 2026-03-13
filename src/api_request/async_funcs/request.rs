@@ -9,7 +9,7 @@ use ureq::typestate::WithoutBody;
 use crate::ApiRequest;
 use crate::ApiRequestError;
 use crate::HTTPVerb;
-use crate::api_request::error::UreqSnafu;
+use crate::error::UreqSnafu;
 
 impl<T> ApiRequest<T> {
     /// Convert the API request into a ureq request and sends it
