@@ -28,7 +28,11 @@ fn test_get_query() {
     use crate::ApiClient;
 
     let client = ApiClient::builder().build();
-    let res = httpbin_get_request("hello", "world").send(&client).unwrap();
+    let res = httpbin_get_request("hello", "world")
+        .send(&client)
+        .unwrap()
+        .parse()
+        .unwrap();
 
     assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
 }
@@ -42,6 +46,8 @@ async fn test_get_query_async() {
     let res = httpbin_get_request("hello", "world")
         .send_async(&client)
         .await
+        .unwrap()
+        .parse()
         .unwrap();
 
     assert_eq!(res.args.get("hello"), Some(&"world".to_string()))

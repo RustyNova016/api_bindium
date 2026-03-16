@@ -1,5 +1,6 @@
 use core::time::Duration;
 use std::collections::HashMap;
+use std::sync::Arc;
 use std::time::Instant;
 
 #[cfg(any(feature = "sync", feature = "async"))]
@@ -15,7 +16,6 @@ use crate::HTTPVerb;
 #[cfg(feature = "async")]
 #[cfg_attr(docsrs, doc(cfg(feature = "async")))]
 pub mod async_funcs;
-pub mod parsing;
 #[cfg(feature = "sync")]
 #[cfg_attr(docsrs, doc(cfg(feature = "sync")))]
 pub mod sync_funcs;
@@ -30,6 +30,7 @@ pub struct ApiRequest<P> {
     /// The http verb of the api request
     verb: HTTPVerb,
 
+    /// The headers of the request
     #[builder(default)]
     headers: HashMap<String, String>,
 
@@ -37,8 +38,10 @@ pub struct ApiRequest<P> {
     body: Option<serde_json::Value>,
 
     /// The parser to use on the response
-    parser: P,
+    #[builder(into)]
+    parser: Arc<P>,
 
+    /// The maximum size of the body of the response. This allows limiting response that may use more memories than it should
     #[builder(skip = 10 * 1024 * 1024)]
     max_body_size: u64,
 
@@ -112,7 +115,7 @@ impl<T> ApiRequest<T> {
             body: self.body,
             headers: self.headers,
             max_body_size: self.max_body_size,
-            parser,
+            parser: Arc::new(parser),
             retry_after: self.retry_after,
             tries: self.tries,
             uri: self.uri,

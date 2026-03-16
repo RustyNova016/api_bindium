@@ -5,6 +5,7 @@
 #![cfg_attr(docsrs, feature(doc_cfg))]
 
 pub mod api_request;
+pub mod api_response;
 pub mod client;
 pub mod endpoints;
 pub mod error;
@@ -21,6 +22,7 @@ pub use api_request::ApiRequest;
 
 pub use crate::parsers::Parser;
 pub use crate::parsers::bytes::ByteParser;
+#[cfg(feature = "image")]
 pub use crate::parsers::image::ImageParser;
 pub use crate::parsers::json::JsonParser;
 pub use crate::parsers::text::TextParser;

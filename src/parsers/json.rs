@@ -4,8 +4,9 @@ use serde_core::de::DeserializeOwned;
 use snafu::ResultExt as _;
 
 use crate::TextParser;
-use crate::parsers::Parser;
+use crate::api_response::ureq_response::UreqResponseInner;
 use crate::error::JsonParsingSnafu;
+use crate::parsers::Parser;
 
 /// Parse a json response into T
 #[derive(Debug)]
@@ -13,18 +14,15 @@ pub struct JsonParser<T>(PhantomData<T>)
 where
     T: Sized + DeserializeOwned;
 
-impl<T> Parser<ureq::http::Response<ureq::Body>> for JsonParser<T>
+impl<T> Parser<UreqResponseInner> for JsonParser<T>
 where
     T: Sized + DeserializeOwned,
 {
     type Output = T;
+    type Error = crate::ApiRequestError;
 
-    fn parse<P>(
-        &self,
-        request: &crate::ApiRequest<P>,
-        response: ureq::http::Response<ureq::Body>,
-    ) -> Result<Self::Output, crate::ApiRequestError> {
-        let text = TextParser.parse(request, response)?;
+    fn parse(&self, response: UreqResponseInner) -> Result<Self::Output, Self::Error> {
+        let text = TextParser.parse(response)?;
 
         // Try to deserialize as our result
         let err = match serde_json::from_str::<T>(&text) {

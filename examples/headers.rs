@@ -21,7 +21,8 @@ fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinG
     ApiRequest::builder()
         .headers(headers)
         .uri(uri)
-        .verb(HTTPVerb::Get).parser(JsonParser::default())
+        .verb(HTTPVerb::Get)
+        .parser(JsonParser::default())
         .build()
 }
 
@@ -32,7 +33,7 @@ struct HttpBinGetResponse {
 
 fn main() {
     let client = ApiClient::builder().build();
-    let res = httpbin_get_request("hello", "world").send(&client).unwrap();
+    let res = httpbin_get_request("hello", "world").send(&client).unwrap().parse().unwrap();
 
     assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
 }

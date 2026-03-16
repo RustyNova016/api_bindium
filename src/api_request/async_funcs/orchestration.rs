@@ -4,10 +4,10 @@ use ureq::http::Response;
 use crate::ApiClient;
 use crate::ApiRequest;
 use crate::ApiRequestError;
+use crate::api_response::ureq_response::UreqResponse;
 use crate::error::MaxRetriesExceededSnafu;
 
 use crate::api_request::get_temporary_error_timeout;
-use crate::Parser;
 use crate::utils::sleep_until_async;
 
 impl<P> ApiRequest<P>
@@ -57,29 +57,17 @@ where
     }
 
     /// Send the request, and retry on failure
-    ///
-    /// This is an advanced function. You are probably looking for [Self::send_async]
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn send_with_retries_async(
+    pub async fn send_async(
         &mut self,
         client: &ApiClient,
-    ) -> Result<Response<Body>, ApiRequestError> {
+    ) -> Result<UreqResponse<P>, ApiRequestError> {
         while self.tries < client.max_retries {
             if let Some(res) = self.try_send_request_async(client).await? {
-                return Ok(res);
+                return Ok(UreqResponse::new(res, self.max_body_size, self.parser.clone()));
             }
         }
 
         MaxRetriesExceededSnafu.fail()
-    }
-
-    /// Send the api request with retries and return the parsed data.
-    #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub async fn send_async(&mut self, client: &ApiClient) -> Result<P::Output, ApiRequestError>
-    where
-        P: Parser<Response<Body>>,
-    {
-        let response = self.send_with_retries_async(client).await?;
-        self.parse_response(response)
     }
 }

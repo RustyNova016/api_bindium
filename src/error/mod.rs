@@ -19,6 +19,19 @@ pub enum ApiRequestError {
         backtrace: snafu::Backtrace,
     },
 
+    #[snafu(display("Couldn't parse the response of {uri}"))]
+    ParsingError {
+        source: ureq::Error,
+
+        #[snafu(implicit)]
+        location: snafu::Location,
+
+        uri: Uri,
+
+        #[cfg(feature = "backtrace")]
+        backtrace: snafu::Backtrace,
+    },
+
     #[snafu(display(
         "The max retry count for the request as been exeeded. You may want to check if the correct url is set, the server is online, or you aren't hitting the ratelimit."
     ))]

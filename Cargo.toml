@@ -80,3 +80,9 @@ required-features = ["sync"]
 doc-scrape-examples = true
 name = "post_request"
 path = "examples/post_request.rs"
+
+[[example]]
+required-features = ["sync"]
+doc-scrape-examples = true
+name = "parsers"
+path = "examples/parsers.rs"
