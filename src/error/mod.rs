@@ -4,10 +4,23 @@ use snafu::Snafu;
 use ureq::http::Uri;
 
 #[derive(Debug, Snafu)]
-#[snafu(visibility(pub(super)))]
+#[snafu(visibility(pub(crate)))]
 pub enum ApiRequestError {
     #[snafu(display("Couldn't successfully send the http request to {uri}"))]
     UreqError {
+        source: ureq::Error,
+
+        #[snafu(implicit)]
+        location: snafu::Location,
+
+        uri: Uri,
+
+        #[cfg(feature = "backtrace")]
+        backtrace: snafu::Backtrace,
+    },
+
+    #[snafu(display("Couldn't parse the response of {uri}"))]
+    ParsingError {
         source: ureq::Error,
 
         #[snafu(implicit)]

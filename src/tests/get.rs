@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use macro_rules_attribute::apply;
 
 use crate::ApiRequest;
-use crate::api_request::parsers::json::JsonParser;
+use crate::JsonParser;
 use crate::endpoints::EndpointUriBuilder;
 
 fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinGetResponse>> {
@@ -13,7 +13,7 @@ fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinG
         .set_authority("httpbin.org")
         .set_path("/get")
         .add_parameter(arg, value)
-        .into_api_request(crate::HTTPVerb::Get)
+        .into_api_request(crate::HTTPVerb::Get, JsonParser::default())
         .unwrap()
 }
 
@@ -28,7 +28,11 @@ fn test_get_query() {
     use crate::ApiClient;
 
     let client = ApiClient::builder().build();
-    let res = httpbin_get_request("hello", "world").send(&client).unwrap();
+    let res = httpbin_get_request("hello", "world")
+        .send(&client)
+        .unwrap()
+        .parse()
+        .unwrap();
 
     assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
 }
@@ -42,6 +46,8 @@ async fn test_get_query_async() {
     let res = httpbin_get_request("hello", "world")
         .send_async(&client)
         .await
+        .unwrap()
+        .parse()
         .unwrap();
 
     assert_eq!(res.args.get("hello"), Some(&"world".to_string()))

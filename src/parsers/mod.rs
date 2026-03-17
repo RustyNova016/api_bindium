@@ -1,6 +1,3 @@
-use crate::ApiRequest;
-use crate::ApiRequestError;
-
 pub mod bytes;
 #[cfg(feature = "image")]
 pub mod image;
@@ -13,7 +10,10 @@ pub mod text;
 ///
 /// See [text::TextParser], [json::JsonParser]
 pub trait Parser<R> {
+    /// The output type of the parser
     type Output;
+    /// The error type of the parser
+    type Error;
 
-    fn parse<P>(request: &ApiRequest<P>, response: R) -> Result<Self::Output, ApiRequestError>;
+    fn parse(&self, response: R) -> Result<Self::Output, Self::Error>;
 }

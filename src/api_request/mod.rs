@@ -1,6 +1,6 @@
-use core::marker::PhantomData;
 use core::time::Duration;
 use std::collections::HashMap;
+use std::sync::Arc;
 use std::time::Instant;
 
 #[cfg(any(feature = "sync", feature = "async"))]
@@ -16,16 +16,13 @@ use crate::HTTPVerb;
 #[cfg(feature = "async")]
 #[cfg_attr(docsrs, doc(cfg(feature = "async")))]
 pub mod async_funcs;
-pub mod error;
-pub mod parsers;
-pub mod parsing;
 #[cfg(feature = "sync")]
 #[cfg_attr(docsrs, doc(cfg(feature = "sync")))]
 pub mod sync_funcs;
 
 /// A raw API request, used to send custom requests to the API
 #[derive(Debug, Clone, bon::Builder)]
-pub struct ApiRequest<P: ?Sized> {
+pub struct ApiRequest<P> {
     /// The uri to fetch
     #[builder(into)]
     uri: Uri,
@@ -33,6 +30,7 @@ pub struct ApiRequest<P: ?Sized> {
     /// The http verb of the api request
     verb: HTTPVerb,
 
+    /// The headers of the request
     #[builder(default)]
     headers: HashMap<String, String>,
 
@@ -40,9 +38,11 @@ pub struct ApiRequest<P: ?Sized> {
     body: Option<serde_json::Value>,
 
     /// The parser to use on the response
-    #[builder(skip)]
-    parser: PhantomData<P>,
+    #[builder(into)]
+    #[cfg_attr(not(any(feature = "sync", feature = "async")), allow(dead_code))]
+    parser: Arc<P>,
 
+    /// The maximum size of the body of the response. This allows limiting response that may use more memories than it should
     #[builder(skip = 10 * 1024 * 1024)]
     max_body_size: u64,
 
@@ -111,12 +111,12 @@ impl<T> ApiRequest<T> {
     }
 
     /// Set a new parser for the api request.
-    pub fn set_parser<U>(self) -> ApiRequest<U> {
+    pub fn set_parser<U>(self, parser: U) -> ApiRequest<U> {
         ApiRequest {
             body: self.body,
             headers: self.headers,
             max_body_size: self.max_body_size,
-            parser: Default::default(),
+            parser: Arc::new(parser),
             retry_after: self.retry_after,
             tries: self.tries,
             uri: self.uri,

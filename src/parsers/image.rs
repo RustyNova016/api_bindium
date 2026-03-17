@@ -2,26 +2,27 @@ use image::DynamicImage;
 use snafu::ResultExt;
 use ureq::ResponseExt as _;
 
-use crate::api_request::error::ImageParsingSnafu;
-use crate::api_request::error::UreqSnafu;
-use crate::api_request::parsers::Parser;
+use crate::api_response::ureq_response::UreqResponseInner;
+use crate::error::ImageParsingSnafu;
+use crate::error::UreqSnafu;
+use crate::parsers::Parser;
 
+/// Parse the response into an [`image::DynamicImage`]
 pub struct ImageParser;
 
-impl Parser<ureq::http::Response<ureq::Body>> for ImageParser {
+impl Parser<UreqResponseInner> for ImageParser {
     type Output = DynamicImage;
+    type Error = crate::ApiRequestError;
 
-    fn parse<P>(
-        request: &crate::ApiRequest<P>,
-        mut response: ureq::http::Response<ureq::Body>,
-    ) -> Result<Self::Output, crate::ApiRequestError> {
+    fn parse(&self, mut response: UreqResponseInner) -> Result<Self::Output, Self::Error> {
         let bytes = response
+            .data
             .body_mut()
             .with_config()
-            .limit(request.max_body_size())
+            .limit(response.max_body_size)
             .read_to_vec()
             .context(UreqSnafu {
-                uri: response.get_uri().to_owned(),
+                uri: response.data.get_uri().to_owned(),
             })?;
 
         image::load_from_memory(&bytes).context(ImageParsingSnafu { data: bytes })
@@ -31,18 +32,19 @@ impl Parser<ureq::http::Response<ureq::Body>> for ImageParser {
 #[cfg(test)]
 pub mod test {
     use crate::ApiClient;
-    use crate::api_request::parsers::image::ImageParser;
     use crate::endpoints::EndpointUriBuilder;
 
     #[cfg(feature = "sync")]
     #[test]
     pub fn test_image_parsing() {
+        use crate::parsers::image::ImageParser;
+
         let mut req: crate::ApiRequest<ImageParser> = EndpointUriBuilder::new()
             .https()
             .set_authority("avatars.githubusercontent.com")
             .set_path("/u/50844553")
             .add_parameter("v", 4)
-            .into_api_request(crate::HTTPVerb::Get)
+            .into_api_request(crate::HTTPVerb::Get, ImageParser)
             .unwrap();
 
         let client = ApiClient::builder().build();

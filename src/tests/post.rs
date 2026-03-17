@@ -1,7 +1,7 @@
 use serde_json::json;
 
 use crate::ApiRequest;
-use crate::api_request::parsers::json::JsonParser;
+use crate::JsonParser;
 use crate::endpoints::EndpointUriBuilder;
 
 fn httpbin_post_request() -> ApiRequest<JsonParser<HttpBinPostResponse>> {
@@ -14,6 +14,7 @@ fn httpbin_post_request() -> ApiRequest<JsonParser<HttpBinPostResponse>> {
             json!({
                 "hello": "world"
             }),
+            JsonParser::default(),
         )
         .unwrap()
 }
@@ -34,7 +35,11 @@ fn test_post_query() {
     use crate::ApiClient;
 
     let client = ApiClient::builder().build();
-    let res = httpbin_post_request().send(&client).unwrap();
+    let res = httpbin_post_request()
+        .send(&client)
+        .unwrap()
+        .parse()
+        .unwrap();
 
     // HTTP bin send the body as a string instead of json... So deserializing required
     let json: HttpBinPostResponseData = serde_json::from_str(&res.data).unwrap();
