@@ -40,6 +40,6 @@ where
     T: Sized + DeserializeOwned,
 {
     fn default() -> Self {
-        Self(PhantomData::default())
+        Self(PhantomData)
     }
 }

@@ -32,7 +32,11 @@ struct HttpBinPostResponseData {
 
 fn main() {
     let client = ApiClient::builder().build();
-    let res = httpbin_post_request().send(&client).unwrap().parse().unwrap();
+    let res = httpbin_post_request()
+        .send(&client)
+        .unwrap()
+        .parse()
+        .unwrap();
 
     // HTTP bin send the body as a string instead of json... So deserializing required
     let json: HttpBinPostResponseData = serde_json::from_str(&res.data).unwrap();

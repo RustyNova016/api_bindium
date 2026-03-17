@@ -15,7 +15,8 @@ impl Parser<UreqResponseInner> for ImageParser {
     type Error = crate::ApiRequestError;
 
     fn parse(&self, mut response: UreqResponseInner) -> Result<Self::Output, Self::Error> {
-        let bytes = response.data
+        let bytes = response
+            .data
             .body_mut()
             .with_config()
             .limit(response.max_body_size)

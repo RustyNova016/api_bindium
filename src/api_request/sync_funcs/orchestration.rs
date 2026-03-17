@@ -53,13 +53,14 @@ where
 
     /// Send the request, and retry on failure
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
-    pub fn send(
-        &mut self,
-        client: &ApiClient,
-    ) -> Result<UreqResponse<P>, ApiRequestError> {
+    pub fn send(&mut self, client: &ApiClient) -> Result<UreqResponse<P>, ApiRequestError> {
         while self.tries < client.max_retries {
             if let Some(res) = self.try_send_request(client)? {
-                return Ok(UreqResponse::new(res, self.max_body_size, self.parser.clone()));
+                return Ok(UreqResponse::new(
+                    res,
+                    self.max_body_size,
+                    self.parser.clone(),
+                ));
             }
         }
 

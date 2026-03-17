@@ -64,7 +64,11 @@ where
     ) -> Result<UreqResponse<P>, ApiRequestError> {
         while self.tries < client.max_retries {
             if let Some(res) = self.try_send_request_async(client).await? {
-                return Ok(UreqResponse::new(res, self.max_body_size, self.parser.clone()));
+                return Ok(UreqResponse::new(
+                    res,
+                    self.max_body_size,
+                    self.parser.clone(),
+                ));
             }
         }
 

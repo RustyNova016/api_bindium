@@ -1,6 +1,6 @@
+pub mod bytes;
 #[cfg(feature = "image")]
 pub mod image;
-pub mod bytes;
 pub mod json;
 pub mod text;
 
