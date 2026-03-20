@@ -123,6 +123,10 @@ impl<T> ApiRequest<T> {
             verb: self.verb,
         }
     }
+
+    pub fn headers_mut(&mut self) -> &mut HashMap<String, String> {
+        &mut self.headers
+    }
 }
 
 #[cfg(any(feature = "sync", feature = "async"))]
