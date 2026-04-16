@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.0](https://github.com/RustyNova016/api_bindium/compare/v0.3.1...v0.4.0) - 2026-04-16
+
+### Added
+
+- added headers_mut
+- addclient response
+- use self on parse trait method
+
+### Other
+
+- *(deps)* update hotpath requirement from 0.14.0 to 0.15.0
+- lints
+- [**breaking**] moved parsers
+- move the error
+
 ## [0.3.1](https://github.com/RustyNova016/api_bindium/compare/v0.3.0...v0.3.1) - 2026-03-04
 
 ### Other
