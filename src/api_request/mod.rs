@@ -39,7 +39,7 @@ pub struct ApiRequest<P> {
 
     /// The parser to use on the response
     #[builder(into)]
-    #[cfg_attr(not(any(feature = "sync", feature = "async")), allow(dead_code))]
+    #[cfg_attr(not(any(feature = "sync", feature = "async")), expect(dead_code, reason = "Parser isn't used when no context is provided"))]
     parser: Arc<P>,
 
     /// The maximum size of the body of the response. This allows limiting response that may use more memories than it should
