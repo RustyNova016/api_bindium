@@ -21,6 +21,7 @@ impl EndpointUriBuilder<EndpointUriBuilderPath> {
     ///
     /// assert_eq!(&uri.to_string(), "https://api.org/one_fragment/multiple/fragments")
     /// ```
+    #[must_use]
     pub fn add_path_fragment(mut self, path: &str) -> Self {
         match (self.uri.ends_with('/'), path.starts_with('/')) {
             (true, true) => {
