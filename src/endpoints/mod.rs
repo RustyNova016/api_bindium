@@ -1,7 +1,7 @@
 use core::fmt::Display;
-use core::str::FromStr;
+use core::str::FromStr as _;
 
-use snafu::ResultExt;
+use snafu::ResultExt as _;
 use snafu::Snafu;
 use ureq::http::Uri;
 use ureq::http::uri::InvalidUri;

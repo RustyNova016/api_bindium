@@ -1,4 +1,4 @@
-use snafu::ResultExt;
+use snafu::ResultExt as _;
 use ureq::Agent;
 use ureq::Body;
 use ureq::RequestBuilder;

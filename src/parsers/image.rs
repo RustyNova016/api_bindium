@@ -1,5 +1,5 @@
 use image::DynamicImage;
-use snafu::ResultExt;
+use snafu::ResultExt as _;
 use ureq::ResponseExt as _;
 
 use crate::api_response::ureq_response::UreqResponseInner;
