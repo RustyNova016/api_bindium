@@ -39,7 +39,10 @@ pub struct ApiRequest<P> {
 
     /// The parser to use on the response
     #[builder(into)]
-    #[cfg_attr(not(any(feature = "sync", feature = "async")), allow(dead_code))]
+    #[cfg_attr(
+        not(any(feature = "sync", feature = "async")),
+        expect(dead_code, reason = "Parser isn't used when no context is provided")
+    )]
     parser: Arc<P>,
 
     /// The maximum size of the body of the response. This allows limiting response that may use more memories than it should
@@ -95,7 +98,7 @@ impl<T> ApiRequest<T> {
         }
 
         let secs_to_wait = self.tries * (self.tries as f32 / 0.5).round() as u32;
-        self.retry_after = Instant::now() + Duration::from_secs(secs_to_wait as u64)
+        self.retry_after = Instant::now() + Duration::from_secs(u64::from(secs_to_wait))
     }
 
     /// Add the config to an ureq request

@@ -39,9 +39,8 @@ where
                 if err.is_retryable() {
                     self.increment_retry(None);
                     return Ok(None);
-                } else {
-                    return Err(err);
                 }
+                return Err(err);
             }
         };
 

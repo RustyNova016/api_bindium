@@ -10,6 +10,7 @@ impl EndpointUriBuilder<EndpointUriBuilderQuery> {
     /// Add a parameter to the uri.
     ///
     /// The name and value are automatically escaped
+    #[must_use]
     pub fn add_parameter(
         self,
         name: &str,
@@ -37,6 +38,7 @@ impl EndpointUriBuilder<EndpointUriBuilderQuery> {
     /// Add a parameter to the uri if the value is `Some`
     ///
     /// The name and value are automatically escaped
+    #[must_use]
     pub fn maybe_add_parameter(
         self,
         name: &str,

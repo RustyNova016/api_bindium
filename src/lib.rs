@@ -1,5 +1,7 @@
-// Until `snafu` got something to easily box error sources, we ignore it
-#![allow(clippy::result_large_err)]
+#![allow(
+    clippy::result_large_err,
+    reason = "Until `snafu` got something to easily box error sources, we ignore it"
+)]
 // only enables the `doc_cfg` feature when
 // the `docsrs` configuration attribute is defined
 #![cfg_attr(docsrs, feature(doc_cfg))]

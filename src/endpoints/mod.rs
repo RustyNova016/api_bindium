@@ -1,7 +1,7 @@
 use core::fmt::Display;
-use core::str::FromStr;
+use core::str::FromStr as _;
 
-use snafu::ResultExt;
+use snafu::ResultExt as _;
 use snafu::Snafu;
 use ureq::http::Uri;
 use ureq::http::uri::InvalidUri;
@@ -61,7 +61,7 @@ impl<S> EndpointUriBuilder<S> {
 }
 
 impl<S> Display for EndpointUriBuilder<S> {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         write!(f, "{}", self.uri)
     }
 }
