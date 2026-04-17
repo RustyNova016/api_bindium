@@ -95,7 +95,7 @@ impl<T> ApiRequest<T> {
         }
 
         let secs_to_wait = self.tries * (self.tries as f32 / 0.5).round() as u32;
-        self.retry_after = Instant::now() + Duration::from_secs(secs_to_wait as u64)
+        self.retry_after = Instant::now() + Duration::from_secs(u64::from(secs_to_wait))
     }
 
     /// Add the config to an ureq request

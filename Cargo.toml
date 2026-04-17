@@ -90,3 +90,6 @@ path = "examples/parsers.rs"
 [lints.clippy]
 alloc_instead_of_core = "deny"
 std_instead_of_core = "deny"
+allow_attributes = "warn"
+cast_lossless = "deny"
+cloned_instead_of_copied = "deny"
