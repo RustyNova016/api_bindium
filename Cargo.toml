@@ -38,7 +38,7 @@ macro_rules_attribute = "0.2.2"
 smol-macros = "0.1.1"
 
 [features]
-default = ["rustls", "sync"]
+default = ["rustls"]
 
 # Async
 sync = []
@@ -86,3 +86,7 @@ required-features = ["sync"]
 doc-scrape-examples = true
 name = "parsers"
 path = "examples/parsers.rs"
+
+[lints.clippy]
+alloc_instead_of_core = "deny"
+std_instead_of_core = "deny"

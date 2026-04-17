@@ -8,7 +8,7 @@ pub enum HTTPVerb {
 }
 
 impl Display for HTTPVerb {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         match self {
             HTTPVerb::Get => write!(f, "GET"),
             HTTPVerb::Post => write!(f, "POST"),
