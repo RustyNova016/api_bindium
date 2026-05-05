@@ -27,3 +27,5 @@ Debuging:
 - `backtrace`: Enable error backtraces
 - `tracing`: Enable tracing
 - `hotpath`, `hotpath-alloc`, `hotpath-off`: Enable [hotpath](https://github.com/pawurb/hotpath-rs) debuging / perf analysis.
+- `testing`: Utilities to test your endpoints. It's recomended to only enable on in the dev dependencies
+
