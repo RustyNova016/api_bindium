@@ -39,10 +39,10 @@ pub struct ApiRequest<P> {
 
     /// The parser to use on the response
     #[builder(into)]
-    #[cfg_attr(
-        not(any(feature = "sync", feature = "async")),
-        expect(dead_code, reason = "Parser isn't used when no context is provided")
-    )]
+    // #[cfg_attr(
+    //     not(any(feature = "sync", feature = "async", feature = "testing")),
+    //     expect(dead_code, reason = "Parser isn't used when no context is provided")
+    // )]
     parser: Arc<P>,
 
     /// The maximum size of the body of the response. This allows limiting response that may use more memories than it should
@@ -84,6 +84,10 @@ impl<T> ApiRequest<T> {
         self.max_body_size
     }
 
+    pub fn parser(&self) -> &Arc<T> {
+        &self.parser
+    }
+
     /// Reset the api request back to 0 tries
     pub fn reset(&mut self) {
         self.tries = 0
@@ -114,17 +118,29 @@ impl<T> ApiRequest<T> {
     }
 
     /// Set a new parser for the api request.
-    pub fn set_parser<U>(self, parser: U) -> ApiRequest<U> {
+    pub fn set_parser<U, P2>(self, parser: U) -> ApiRequest<P2>
+    where
+        U: Into<Arc<P2>>,
+    {
         ApiRequest {
             body: self.body,
             headers: self.headers,
             max_body_size: self.max_body_size,
-            parser: Arc::new(parser),
+            parser: parser.into(),
             retry_after: self.retry_after,
             tries: self.tries,
             uri: self.uri,
             verb: self.verb,
         }
+    }
+
+    #[cfg(feature = "testing")]
+    #[must_use]
+    /// Assert that the url match the one provided
+    pub fn assert_url(self, url: &str) -> Self {
+        println!("✔️ Valid URL");
+        assert_eq!(&self.uri().to_string(), url);
+        self
     }
 
     pub fn headers_mut(&mut self) -> &mut HashMap<String, String> {

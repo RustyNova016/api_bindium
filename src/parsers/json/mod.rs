@@ -8,6 +8,9 @@ use crate::api_response::ureq_response::UreqResponseInner;
 use crate::error::JsonParsingSnafu;
 use crate::parsers::Parser;
 
+#[cfg(feature = "testing")]
+pub mod testing;
+
 /// Parse a json response into T
 #[derive(Debug)]
 pub struct JsonParser<T>(PhantomData<T>)
