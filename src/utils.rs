@@ -3,7 +3,7 @@ use std::time::Instant;
 
 #[cfg(feature = "sync")]
 pub(crate) fn sleep_until(until: Instant) {
-    let dur = Instant::now() - until;
+    let dur = until.elapsed();
     if dur.as_secs() > 0 {
         use std::thread::sleep;
 
