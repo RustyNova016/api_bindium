@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0](https://github.com/RustyNova016/api_bindium/compare/v0.4.0...v0.5.0) - 2026-08-17
+
+### Added
+
+- add hotpath http support
+- add testing json parser
+
+### Fixed
+
+- [**breaking**] Remove default TLS as it is annoying for upstream deps to control
+- *(deps)* update rust crate hotpath to 0.16.0
+
+### Other
+
+- *(deps)* update actions/checkout action to v7
+- remove dependabot
+- add nix caching
+- move to self hosted http bin due to downtime
+- Add renovate.json
+- use nix for faster downloads
+- fmt
+- fix clippy hack
+- more lints
+- *(lint)* unused_trait_names
+- *(lint)* return_self_not_must_use
+- *(lint)* redundant_else
+- *(lint)* cast_lossless
+- *(lint)* std_instead_of_core
+
 ## [0.4.0](https://github.com/RustyNova016/api_bindium/compare/v0.3.1...v0.4.0) - 2026-04-16
 
 ### Added
