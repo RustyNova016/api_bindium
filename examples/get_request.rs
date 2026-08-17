@@ -9,7 +9,7 @@ use api_bindium::endpoints::EndpointUriBuilder;
 fn httpbin_get_request(arg: &str, value: &str) -> ApiRequest<JsonParser<HttpBinGetResponse>> {
     EndpointUriBuilder::new()
         .https()
-        .set_authority("httpbin.org")
+        .set_authority("httpbin.alephrium.com")
         .set_path("/get")
         .add_parameter(arg, value)
         .into_api_request(HTTPVerb::Get, JsonParser::default())

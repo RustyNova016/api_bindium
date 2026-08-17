@@ -10,7 +10,7 @@ use serde_json::json;
 
 // This exemple is a follow up to the `post_request` exemple.
 // We'll create a parser for HTTPBin's /anything endpoint so we don't have to redeserialize our form data again
-// For an exemple query, run `curl -X POST https://httpbin.org/anything --data '{"username":"xyz","password":"xyz"}'`
+// For an exemple query, run `curl -X POST https://httpbin.alephrium.com/anything --data '{"username":"xyz","password":"xyz"}'`
 
 /// The json response from HTTPBin
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
@@ -45,7 +45,7 @@ fn main() {
     let client = ApiClient::builder().build();
     let mut request = EndpointUriBuilder::new()
         .https()
-        .set_authority("httpbin.org")
+        .set_authority("httpbin.alephrium.com")
         .set_path("/post")
         .into_api_request_with_body(
             HTTPVerb::Post,
