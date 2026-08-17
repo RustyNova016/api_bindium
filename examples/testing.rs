@@ -13,7 +13,7 @@ use serde_json::json;
 fn httpbin_post_request() -> ApiRequest<JsonParser<HttpBinPostResponse>> {
     EndpointUriBuilder::new()
         .https()
-        .set_authority("httpbin.org")
+        .set_authority("httpbin.alephrium.com")
         .set_path("/post")
         .into_api_request_with_body(
             HTTPVerb::Post,
@@ -39,7 +39,7 @@ struct HttpBinPostResponseData {
 fn main() {
     let client = ApiClient::builder().build();
     let res = httpbin_post_request()
-        .assert_url("https://httpbin.org/post") // Check the URL. Will panic if incorrect
+        .assert_url("https://httpbin.alephrium.com/post") // Check the URL. Will panic if incorrect
         .set_parser(TestingJsonParser::<HttpBinPostResponse>::default()) // We replace the parser by its testing equivalent
         .send(&client)
         .unwrap()

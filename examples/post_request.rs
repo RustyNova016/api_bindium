@@ -8,7 +8,7 @@ use serde_json::json;
 fn httpbin_post_request() -> ApiRequest<JsonParser<HttpBinPostResponse>> {
     EndpointUriBuilder::new()
         .https()
-        .set_authority("httpbin.org")
+        .set_authority("httpbin.alephrium.com")
         .set_path("/post")
         .into_api_request_with_body(
             HTTPVerb::Post,
