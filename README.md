@@ -27,5 +27,6 @@ Debuging:
 - `backtrace`: Enable error backtraces
 - `tracing`: Enable tracing
 - `hotpath`, `hotpath-alloc`, `hotpath-off`: Enable [hotpath](https://github.com/pawurb/hotpath-rs) debuging / perf analysis.
+- `hotpath-http`: Enable [hotpath http tracing](https://hotpath.rs/http_tracing). Note that it only works if the ureq agent is the default one, or use the default config
 - `testing`: Utilities to test your endpoints. It's recomended to only enable on in the dev dependencies
 

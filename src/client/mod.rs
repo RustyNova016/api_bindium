@@ -16,12 +16,13 @@ use governor::state::InMemoryState;
 #[cfg(feature = "rate_limit")]
 use governor::state::NotKeyed;
 use ureq::Agent;
+use ureq::config::Config;
 
 /// The client handling the data for fetching
 #[derive(Debug, bon::Builder, Clone)]
 pub struct ApiClient {
-    /// The [ureq::Agent] for the
-    #[builder(default = ureq::agent())]
+    /// The [ureq::Agent] for the api client.
+    #[builder(default = ApiClient::default_agent())]
     pub agent: Agent,
 
     /// How many retries allowed before erroring out the request?
@@ -43,6 +44,21 @@ impl ApiClient {
         if let Some(rate) = &self.rate_limit {
             rate.until_ready().await
         }
+    }
+
+    /// Return the default ureq agent config
+    pub fn default_agent_config() -> Config {
+        let conf = Config::builder();
+
+        #[cfg(feature = "hotpath-http")]
+        let conf = hotpath::http!(conf);
+
+        conf.build()
+    }
+
+    /// Return the default ureq agent
+    pub fn default_agent() -> Agent {
+        Agent::new_with_config(Self::default_agent_config())
     }
 }
 
