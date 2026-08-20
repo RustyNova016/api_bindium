@@ -12,7 +12,7 @@ use serde_json::json;
 // We'll create a parser for HTTPBin's /anything endpoint so we don't have to redeserialize our form data again
 // For an exemple query, run `curl -X POST https://httpbin.alephrium.com/anything --data '{"username":"xyz","password":"xyz"}'`
 
-/// The json response from HTTPBin
+/// The json response from `HTTPBin`
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 struct HttpBinPostResponse {
     data: String,
