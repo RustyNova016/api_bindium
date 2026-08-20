@@ -45,7 +45,7 @@ where
             self.increment_retry(retry_after);
 
             return Ok(None);
-        };
+        }
 
         Ok(Some(response))
     }

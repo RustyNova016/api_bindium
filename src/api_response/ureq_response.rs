@@ -7,7 +7,7 @@ use crate::Parser;
 
 /// A wrapper arround a [`ureq::Response<Body>`]
 ///
-/// This also have some settings to read the response that are transfered from the [crate::ApiRequest]
+/// This also have some settings to read the response that are transfered from the [`crate::ApiRequest`]
 #[derive(Debug)]
 pub struct UreqResponseInner {
     /// The data of the response

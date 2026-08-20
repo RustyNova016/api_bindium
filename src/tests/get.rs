@@ -34,7 +34,7 @@ fn test_get_query() {
         .parse()
         .unwrap();
 
-    assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
+    assert_eq!(res.args.get("hello"), Some(&"world".to_string()));
 }
 
 #[cfg(feature = "async")]
@@ -50,5 +50,5 @@ async fn test_get_query_async() {
         .parse()
         .unwrap();
 
-    assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
+    assert_eq!(res.args.get("hello"), Some(&"world".to_string()));
 }
