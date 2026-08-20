@@ -158,7 +158,7 @@ jobs:
       - name: Cargo Mutants
         shell: 'nix develop -c bash -e {0}'
         run: |
-          cargo mutants --no-shuffle -vV --baseline=skip --in-diff git.diff
+          cargo mutants --no-shuffle -vV --baseline=skip --in-place --in-diff git.diff
 
       - name: Archive mutants.out
         uses: actions/upload-artifact@v7

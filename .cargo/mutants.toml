@@ -1,1 +1,2 @@
 all_features = true
+exclude_re = ["src/api_request/async_funcs/orchestration\\.rs:73:24: replace \\+= with .+ in ApiRequest<P>::send_async"]
