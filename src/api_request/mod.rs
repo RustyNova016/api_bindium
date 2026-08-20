@@ -137,6 +137,10 @@ impl<T> ApiRequest<T> {
     #[cfg(feature = "testing")]
     #[must_use]
     /// Assert that the url match the one provided
+    ///
+    /// # Panics
+    ///
+    /// Panics if the request URI does not match `url`.
     pub fn assert_url(self, url: &str) -> Self {
         println!("✔️ Valid URL");
         assert_eq!(&self.uri().to_string(), url);
