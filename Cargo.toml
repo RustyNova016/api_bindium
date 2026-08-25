@@ -98,6 +98,8 @@ name = "testing"
 path = "examples/testing.rs"
 
 [lints.clippy]
+#pedantic = { level = "warn", priority = -1 }
+
 alloc_instead_of_core = "deny"
 std_instead_of_core = "deny"
 allow_attributes = "warn"

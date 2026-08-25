@@ -18,7 +18,7 @@ where
     ///
     /// Returns `Ok(None)` on a retriable error
     ///
-    /// This is an advanced function. You are probably looking for [Self::send_async]
+    /// This is an advanced function. You are probably looking for [`Self::send_async`]
     #[cfg_attr(feature = "hotpath", hotpath::measure)]
     async fn try_send_request_async(
         &mut self,
@@ -50,7 +50,7 @@ where
             self.increment_retry(retry_after);
 
             return Ok(None);
-        };
+        }
 
         Ok(Some(response))
     }
@@ -69,6 +69,8 @@ where
                     self.parser.clone(),
                 ));
             }
+
+            self.tries += 1;
         }
 
         MaxRetriesExceededSnafu.fail()

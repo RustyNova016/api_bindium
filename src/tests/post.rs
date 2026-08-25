@@ -44,5 +44,5 @@ fn test_post_query() {
     // HTTP bin send the body as a string instead of json... So deserializing required
     let json: HttpBinPostResponseData = serde_json::from_str(&res.data).unwrap();
 
-    assert_eq!(json.hello, "world".to_string())
+    assert_eq!(json.hello, "world".to_string());
 }

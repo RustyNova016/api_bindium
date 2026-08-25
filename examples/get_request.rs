@@ -29,5 +29,5 @@ fn main() {
         .parse()
         .unwrap();
 
-    assert_eq!(res.args.get("hello"), Some(&"world".to_string()))
+    assert_eq!(res.args.get("hello"), Some(&"world".to_string()));
 }

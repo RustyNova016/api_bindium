@@ -21,7 +21,7 @@ use ureq::config::Config;
 /// The client handling the data for fetching
 #[derive(Debug, bon::Builder, Clone)]
 pub struct ApiClient {
-    /// The [ureq::Agent] for the api client.
+    /// The [`ureq::Agent`] for the api client.
     #[builder(default = ApiClient::default_agent())]
     pub agent: Agent,
 
