@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1](https://github.com/RustyNova016/api_bindium/compare/v0.5.0...v0.5.1) - 2026-08-25
+
+### Fixed
+
+- try_send_request doesn't respect retry count
+- try_send_request_async doesn't respect retry count
+- sleep_until not working
+
+### Other
+
+- ignore more mutants
+- add panic warning to assert_url
+- test in ci
+- disable warning deny (Messes up mutants)
+- add cargo mutant testing
+- *(deps)* update rust crate hotpath to 0.24.0
+
 ## [0.5.0](https://github.com/RustyNova016/api_bindium/compare/v0.4.0...v0.5.0) - 2026-08-17
 
 ### Added
