@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.2](https://github.com/RustyNova016/api_bindium/compare/v0.5.1...v0.5.2) - 2026-09-07
+
+### Other
+
+- *(deps)* lock file maintenance
+- *(deps)* update rust crate hotpath to 0.25.0
+
 ## [0.5.1](https://github.com/RustyNova016/api_bindium/compare/v0.5.0...v0.5.1) - 2026-08-25
 
 ### Fixed
