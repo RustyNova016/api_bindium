@@ -57,6 +57,12 @@ pub struct ApiRequest<P> {
     /// Do not retry the query before this instant
     #[builder(skip = Instant::now())]
     pub retry_after: Instant,
+
+    /// The exponent for the exponential retry's delay . It is calculated like so:
+    /// 
+    /// `self.tries ^ self.incremental_retry_exp = minimum_wait_duration (in seconds)`
+    #[builder(default = 1.45)]
+    pub incremental_retry_exp: f32,
 }
 
 impl<T> ApiRequest<T> {
@@ -101,7 +107,7 @@ impl<T> ApiRequest<T> {
             return;
         }
 
-        let secs_to_wait = self.tries * (self.tries as f32 / 0.5).round() as u32;
+        let secs_to_wait = (self.tries as f32).powf(self.incremental_retry_exp).round() as u32;
         self.retry_after = Instant::now() + Duration::from_secs(u64::from(secs_to_wait))
     }
 
@@ -131,6 +137,7 @@ impl<T> ApiRequest<T> {
             tries: self.tries,
             uri: self.uri,
             verb: self.verb,
+            incremental_retry_exp: self.incremental_retry_exp
         }
     }
 
