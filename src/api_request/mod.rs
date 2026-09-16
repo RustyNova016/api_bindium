@@ -63,6 +63,9 @@ pub struct ApiRequest<P> {
     /// `self.tries ^ self.incremental_retry_exp = minimum_wait_duration (in seconds)`
     #[builder(default = 1.45)]
     pub incremental_retry_exp: f32,
+
+    /// How many times this request can be retried before erroring out
+    pub max_tries: Option<u32>,
 }
 
 impl<T> ApiRequest<T> {
@@ -137,7 +140,8 @@ impl<T> ApiRequest<T> {
             tries: self.tries,
             uri: self.uri,
             verb: self.verb,
-            incremental_retry_exp: self.incremental_retry_exp
+            incremental_retry_exp: self.incremental_retry_exp,
+            max_tries: self.max_tries
         }
     }
 
