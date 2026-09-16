@@ -61,7 +61,7 @@ where
         &mut self,
         client: &ApiClient,
     ) -> Result<UreqResponse<P>, ApiRequestError> {
-        while self.tries < client.max_retries {
+        while self.tries < *self.max_tries.as_ref().unwrap_or(&client.max_retries) {
             if let Some(res) = self.try_send_request_async(client).await? {
                 return Ok(UreqResponse::new(
                     res,
