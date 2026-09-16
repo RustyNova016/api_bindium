@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.3](https://github.com/RustyNova016/api_bindium/compare/v0.5.2...v0.5.3) - 2026-09-16
+
+### Added
+
+- allow overriding the max_tries of a specific request
+- allow changing the incremental retry exponent
+
+### Other
+
+- *(deps)* lock file maintenance
+- ci fixes
+- fix missing clippy
+
 ## [0.5.2](https://github.com/RustyNova016/api_bindium/compare/v0.5.1...v0.5.2) - 2026-09-07
 
 ### Other
