@@ -59,7 +59,7 @@ pub struct ApiRequest<P> {
     pub retry_after: Instant,
 
     /// The exponent for the exponential retry's delay . It is calculated like so:
-    /// 
+    ///
     /// `self.tries ^ self.incremental_retry_exp = minimum_wait_duration (in seconds)`
     #[builder(default = 1.45)]
     pub incremental_retry_exp: f32,
@@ -141,7 +141,7 @@ impl<T> ApiRequest<T> {
             uri: self.uri,
             verb: self.verb,
             incremental_retry_exp: self.incremental_retry_exp,
-            max_tries: self.max_tries
+            max_tries: self.max_tries,
         }
     }
 
