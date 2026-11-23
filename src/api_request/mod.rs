@@ -3,6 +3,8 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use std::time::Instant;
 
+#[cfg(feature = "tracing")]
+use tracing::warn;
 #[cfg(any(feature = "sync", feature = "async"))]
 use ureq::Body;
 #[cfg(any(feature = "sync", feature = "async"))]
@@ -52,7 +54,7 @@ pub struct ApiRequest<P> {
     // === Fetching state ===
     /// The current number of times the request has been tried
     #[builder(skip)]
-    pub tries: u32,
+    tries: u32,
 
     /// Do not retry the query before this instant
     #[builder(skip = Instant::now())]
@@ -102,16 +104,28 @@ impl<T> ApiRequest<T> {
         self.tries = 0
     }
 
+    pub fn tries(&self) -> u32 {
+        self.tries
+    }
+
     /// Increment the retry counter and set the new retry after
     pub fn increment_retry(&mut self, retry_after: Option<Instant>) {
         self.tries += 1;
-        if let Some(retry_after) = retry_after {
-            self.retry_after = retry_after;
-            return;
-        }
 
+        // Use the retry after of the server as a basis
+        let server_basis = retry_after.unwrap_or_else(Instant::now);
+
+        // Then we add the exponential backoff to the basis
         let secs_to_wait = (self.tries as f32).powf(self.incremental_retry_exp).round() as u32;
-        self.retry_after = Instant::now() + Duration::from_secs(u64::from(secs_to_wait))
+        self.retry_after = server_basis + Duration::from_secs(u64::from(secs_to_wait));
+
+        #[cfg(feature = "tracing")]
+        warn!(
+            "Error while fetching. Retrying after `{:?}` ({}/{}, {secs_to_wait}s wait)",
+            self.retry_after,
+            self.tries,
+            self.max_tries.unwrap_or(999)
+        );
     }
 
     /// Add the config to an ureq request

@@ -69,8 +69,6 @@ where
                     self.parser.clone(),
                 ));
             }
-
-            self.tries += 1;
         }
 
         MaxRetriesExceededSnafu.fail()
